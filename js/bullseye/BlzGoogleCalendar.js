@@ -6,6 +6,7 @@
  */
 if (typeof(Blz.Google)=='undefined') Blz.Google={};
 Blz.Google.Calendar = {
+	url:'https://www.google.com/calendar/',
 	baseUrl: 'http://www.google.com/calendar/feeds',
 	rgxAllDay: /^([0-9]+)-([0-9]+)-([0-9]+)$/,
 	rgxDate: /^([0-9]+)-([0-9]+)-([0-9]+)T([0-9]+):([0-9]+):([0-9]+)/,
@@ -25,20 +26,20 @@ Blz.Google.Calendar = {
 			//w.print("Blz.Google.Calendar.retrieveCalendar: already loading");
 			return;
 		}
-		
-		// http://www.google.com/calendar/feeds/default/allcalendars/full
+		/*
 		if (!this.isLogin) {
 			w.print("Blz.Google.Calendar.retrieveCalendar: no login");
 			return false;
-		}
+		}*/
 		if (!this.hasSession) {
 			w.print("Blz.Google.Calendar.retrieveCalendar: no session");
-			this.session(u);
+			this.session();
 			return false;
 		}
+		
+		// http://www.google.com/calendar/feeds/default/allcalendars/full
 		var u = this.baseUrl + '/default/allcalendars/full';
 		if (this.gsessionid!='') u += '?gsessionid='+this.gsessionid;
-		
 		w.print("Blz.Google.Calendar.retrieveCalendar: try to fetch: " + u);
 		var params = {};
 		var headers = this.getAuthHeader();
@@ -46,18 +47,18 @@ Blz.Google.Calendar = {
 		Blz.Ajax.get(u, function(e) {
 			try {
 				gcal.isCalendarListRequesting = false;
-				var xhr = e.response;
-				var content = e.data;
-				
+				var xhr = e.response, success = e.success, content = e.data, calendars = [];
 				w.print("Blz.Google.Calendar.retrieveCalendar: Http Status = "+xhr.status);
-				var calendars = []; 
-				if (e.success) {
+				if (success) {
 					calendars = gcal.parseCalendars(content);
 				} else {
-					w.print("Blz.Google.Calendar.retrieveCalendar: response = "+content);
+					//w.print("Blz.Google.Calendar.retrieveCalendar: response = "+content);
+				}
+				if (xhr.status == 401) {
+					gcal.hasSession = false;
 				}
 				gcal.notifyObservers("CalendarRetrieved", {
-					success: e.success,
+					success: success,
 					context: context,
 					items: calendars
 				});
@@ -105,12 +106,12 @@ Blz.Google.Calendar = {
 		};
 	},
 	retrieveEvent: function(cal, params, context) {
-		var w = Blz.Widget;
-		var gcal = this;
+		var gcal = this, w = Blz.Widget;
+		/*
 		if (!this.isLogin) {
 			w.print("Blz.Google.Calendar.retrieveEvent: no login");
 			return false;
-		}
+		}*/
 		if (!params) params = {};
 		//var u = this.baseUrl + '/default/' + this.visibility + '/' + this.projection+'?gsessionid='+this.gsessionid;
 		var u = cal.link;
@@ -124,27 +125,26 @@ Blz.Google.Calendar = {
 		var headers = this.getAuthHeader();
 		Blz.Ajax.get(u, function(e) {
 			try {
-				
-				var events = [];
-				var xhr = e.response;
-				var content = e.data;
-				
+				var xhr = e.response, success = e.success, content = e.data, events = [];
 				w.print("Blz.Google.Calendar.retrieveEvent: Http Status = "+xhr.status);
 				//var xhr = e.response;
 				//var headres = xhr.getAllResponseHeaders;
 				//for (prop in headres) Blz.Widget.print(prop+":"+headres[prop]);
 				//Blz.Widget.print("fetchEvent:"+content);
-				if (e.success) {
+				if (success) {
 					events = gcal.parseEvents(content);
 					// add color
 					for (var i = 0, len = events.length; i < len; i++) {
 						events[i].color = cal.color;
 					}
 				} else {
-					w.print("Blz.Google.Calendar.retrieveEvent: response = "+content);
+					//w.print("Blz.Google.Calendar.retrieveEvent: response = "+content);
+				}
+				if (xhr.status == 401) {
+					gcal.hasSession = false;
 				}
 				gcal.notifyObservers("EventRetrieved", {
-					success: e.success,
+					success: success,
 					context: context,
 					items: events
 				});
@@ -182,7 +182,6 @@ Blz.Google.Calendar = {
 		var start = 0, end = 0, allDay = 0;
 		try {
 			//for (prop in e) Blz.Widget.print('event['+prop+"]="+e[prop]);
-			
 			id = e.id;
 			link = e.link[0]['href'] || e.link['href']; // TODO:
 			title = e.title;

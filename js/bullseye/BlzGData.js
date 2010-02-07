@@ -5,15 +5,16 @@
  * Copyright (c) 2006-2010, makoto_kw (makoto.kw@gmail.com)
  */
 Blz.GData = {
-	authUrl: 'https://www.google.com/accounts/ClientLogin', // ClientLogin for installed app
 	sessionUrl:'',
-	isLoginRequesting: false,
-	isLogin: false,
-	hasSession: false,
-	mail: '',
-	pass: '',
-	source: '',
-	authContent: '',
+	hasSession:false,
+	useGoogleLogin:true,
+	loginUrl: 'https://www.google.com/accounts/ClientLogin', // ClientLogin for installed app
+	isLoginRequesting:false,
+	isLogin:false,
+	mail:'',
+	pass:'',
+	source:'',
+	authContent:'',
 	gsessionid:'',
 	
 	fixMail: function(mail) {
@@ -42,10 +43,9 @@ Blz.GData = {
 			service: 'cl',
 			source: this.source
 		}
-		this.isLoginRequesting = true;
-		var u = this.authUrl;
-		var s = sessionUrl || this.sessionUrl;
+		var u = this.loginUrl, s = sessionUrl || this.sessionUrl;
 		var gdata = this;
+		gdata.isLoginRequesting = true;
 		Blz.Ajax.post(u, postData, function(e) {
 			gdata.isLoginRequesting = false;
 			if (e.success) {
@@ -65,18 +65,16 @@ Blz.GData = {
 		});
 	},
 	session:function(url) {
-		var gdata = this;
+		var gdata = this, url = url || this.sessionUrl;
 		gdata.isLoginRequesting = true;
 		gdata.gsessionid = '';
 		
-		// TODO:
-		var headers = this.getAuthHeader();
 		var request = new XMLHttpRequest();
-		
 		if (typeof(request.autoRedirect)!='undefined') {
 			request.autoRedirect = false; // for Yahoo Widget Engine
 		}
 		request.open("GET", url, true);
+		var headers = this.getAuthHeader();
 		for (prop in headers) {
 			if (headers.hasOwnProperty(prop)) {
 				request.setRequestHeader(prop, headers[prop]);
@@ -84,7 +82,7 @@ Blz.GData = {
 		}
 		request.onreadystatechange = function() {
 			if (this.readyState==4) {
-				gdata.isLoginRequesting = true;
+				gdata.isLoginRequesting = false;
 				Blz.Widget.print("Blz.GData.session: sestion http status = "+this.status);
 				if (this.status==302) {
 					var headers = this.getAllResponseHeaders();
@@ -98,23 +96,20 @@ Blz.GData = {
 				} else if (this.status==200) {
 					gdata.hasSession = true; // TODO:
 				}
-				if (this.status==200||this.status==302) {
-					gdata.isLoginRequesting = false;
-					gdata.notifyObservers("LoginCompleted", {success:true, response:this});
-				} else {
-					gdata.isLoginRequesting = false;
-					gdata.notifyObservers("LoginCompleted", {success:false, response:this});
-				}
+				gdata.notifyObservers("LoginCompleted", {success:(this.status==200||this.status==302), response:this});
 			}
 		}
 		request.send();
 		
 	},
 	getAuthHeader: function() {
-		return {
-			'Authorization': 'GoogleLogin auth=' + this.authContent,
+		var headers = {
 			'GData-Version': 2
 		};
+		if (this.isGoogleLogin) {
+			headers['Authorization'] = 'GoogleLogin auth=' + this.authContent;
+		}
+		return headers;
 	},
 	parseAuthContent: function(content) {
 		var match;

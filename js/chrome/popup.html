@@ -78,6 +78,7 @@ ul.event_list li.past a.event_title { color:#ddd; }
 			for (var i = 0, tab; tab = tabs[i]; i++) {
 				if (tab.url && tab.url.indexOf(calendar) == 0) {
 					chrome.tabs.update(tab.id, {selected: true});
+					window.close();
 					return;
 				}
 			}
@@ -108,6 +109,7 @@ ul.event_list li.past a.event_title { color:#ddd; }
 		} catch (e) {}
 		update();
 	});
+	$('#login_form').hide();
 	
 	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 		if (request.update) update();
@@ -132,14 +134,15 @@ ul.event_list li.past a.event_title { color:#ddd; }
 			return;
 		}
 		if (!app.isLogin()) {
-			if (mail!=undefined && mail != undefined) {
-				$cal._msg(w.getResourceString('LOGIN_ERROR'));
-			}
-			$login.attr('disabled', false);
-			$('#login_form').show();
+			$cal._msg(w.getResourceString('SESSION_ERROR_ALERT',[app.gcal.url]));
+			//if (mail!=undefined && mail != undefined) {
+			//	$cal._msg(w.getResourceString('LOGIN_ERROR'));
+			//}
+			//$login.attr('disabled', false);
+			//$('#login_form').show();
 			return;
 		}
-		$('#login_form').hide();
+		//$('#login_form').hide();
 		if (app.isCalendarListRequesting()) {
 			$cal._msg(w.getResourceString('LOADING_CALENDARLIST'),true);
 			return;
@@ -148,51 +151,7 @@ ul.event_list li.past a.event_title { color:#ddd; }
 			$cal._msg(w.getResourceString('NOTHING_CALENDARLIST'));
 			return;
 		}
-		
-		function getHeaderDateString(date) {
-			var monthNames = w.getResourceString('SHORTMONTH_NAMES').split(',');
-			var dayNames = w.getResourceString('SHORTDAY_NAMES').split(',');
-			return w.getResourceString('HEADER_DATE',[monthNames[date.getMonth()-1],date.getDate(),dayNames[date.getDay()]]);
-		}
-		
-		function getTimeString(date) {
-			if (date) {
-				var use24 = w.getPref('use24HourTime');
-				var partOne = date.getHours(), partTwo = date.getMinutes(), amPM = '';
-				if (use24==0) {
-					if (partOne > 12) {
-						partOne = partOne - 12;
-						amPM = ' PM';
-					} else {
-						amPM = (partOne == 12) ? ' PM' : ' AM';
-					}
-					if (partOne == 0) partOne = 12;
-				}
-				if (partTwo < 10) partTwo = '0' + partTwo;
-				return partOne + ':' + partTwo + amPM;
-			}
-			return '';
-		}
-		
-		function getRemainTime(date) {
-			var now = new Date();
-			var remain = '', minutes = Math.ceil((date - now) / (60 * 1000));
-			if (minutes <= 0) {
-				remain =  w.getResourceString('TO_GO_MENUTE',[1]); // TBD
-			} else if (minutes < 60) {
-				remain = (minutes > 1) ? w.getResourceString('TO_GO_MENUTES',[minutes]) : w.getResourceString('TO_GO_MENUTE',[minutes]);
-			} else if (minutes >= 60) {
-				var hours = Math.floor(Number(minutes) / 60);
-				minutes = minutes - 60 * hours;
-				if (hours > 1) {
-					remain = (minutes > 1) ? w.getResourceString('TO_GO_HOURS_MENUTES',[hours,minutes]) : w.getResourceString('TO_GO_HOURS_MENUTE',[hours,minutes]);
-				} else {
-					remain = (minutes > 1) ? w.getResourceString('TO_GO_HOUR_MENUTES',[hours,minutes]) : w.getResourceString('TO_GO_HOUR_MENUTE',[hours,minutes]);
-				}
-			}
-			return remain;
-		}
-		
+
 		var now = new Date();
 		var displayDayCount = w.getPref('displayDayCount'), showPast = (w.getPref('showPast') == '1');
 		for (var index = 0, showDays = (!isNaN(displayDayCount)) ? displayDayCount : 2; index < showDays; index++) {
@@ -207,7 +166,7 @@ ul.event_list li.past a.event_title { color:#ddd; }
 					//w.print('"'+cal.title+'" calendar is not selected.');
 				}
 			}
-			var header = getHeaderDateString(cStart);
+			var header = app.getHeaderDateString(cStart);
 			if (offset == 0) header += ' - ' + w.getResourceString('TODAY');
 			else if (offset == 1) header += ' - ' + w.getResourceString('TOMORROW');
 			else if (offset == -1) header += ' - ' + w.getResourceString('YESTERDAY');
@@ -226,9 +185,9 @@ ul.event_list li.past a.event_title { color:#ddd; }
 					eventCount++;
 					
 					var location = (event.location && event.location.length > 0) ? '( ' + event.location + ' )' : '';
-					var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT') : w.getResourceString('TIME_FROM_TO',[getTimeString(event.start),getTimeString(event.end)]);
+					var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT') : w.getResourceString('TIME_FROM_TO',[app.getTimeString(event.start),app.getTimeString(event.end)]);
 					var color = event.color;
-					var remain = (now < event.start) ? getRemainTime(event.start) : '';
+					var remain = (now < event.start) ? app.getRemainTimeString(event.start) : '';
 					var tooltip = [event.title,time,remain,location].join(' ');
 					
 					var $li = $('<li/>').css({'background-color':color});

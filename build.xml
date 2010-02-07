@@ -80,9 +80,8 @@
 		</copy>
 	</target>
 	
-	<target name="package_chrome" description="make package for Chrome">
+	<target name="unpacked_chrome" description="unpacked for Chrome">
 		<property name="long" value="chrome"/>
-		<property name="short" value="crx"/>
 		<property name="contents" value="${dist}/${long}/${projectname}"/>
 		<property name="resources" value="${contents}"/>
 		
@@ -108,12 +107,6 @@
 			<fileset file="${js}/bullseye/BlzWidgetBrowser.js"/>
 			<fileset file="${js}/common/MyGoogleCal.js"/>
 		</concat>
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js"/>
-		</java>
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js --nomunge"/>
-		</java>
 		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/manifest.json"/>
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
@@ -122,6 +115,19 @@
 		<copy todir="${resources}/images">
 		 	<fileset dir="${res}/images" includes="theme/**"/>
 		</copy>
+	</target>
+	
+	<target name="package_chrome" depends="unpacked_chrome" description="make package for Chrome">
+		<property name="long" value="chrome"/>
+		<property name="short" value="crx"/>
+		<property name="contents" value="${dist}/${long}/${projectname}"/>
+		
+		<java jar="${yuicompressor}" fork="true">
+			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js"/>
+		</java>
+		<java jar="${yuicompressor}" fork="true">
+			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js --nomunge"/>
+		</java>
 		<delete>
 			<fileset dir="${dist}">
 				<include name="${projectname}_${short}_${version}.zip"/>
