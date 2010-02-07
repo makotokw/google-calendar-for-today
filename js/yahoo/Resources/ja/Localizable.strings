@@ -1,0 +1,83 @@
+
+"WINDOW_CAPTION" = "My Google Calendar";
+"GO_TO_CALENDAR" = "クリックするとGoogle Calendarを開きます...";
+
+"REFRESH_MENU" = "画面の更新";
+
+"VERSIONCHECK_MENU" = "ウィジェットの更新をチェック";
+"CHECKUPDATEDLG_TITLE1" = "%2 のバージョン %1 が公開されています。(現在のバージョンは %3 です) \nウィジェットを終了しリリースページを表示しますか?";
+"CHECKUPDATEDLG_TITLE2" = "このバージョンは最新バージョンです";
+"CHECKUPDATEDLG_BTN1"  = "はい";
+"CHECKUPDATEDLG_BTN2"  = "いいえ";
+"PREF_VERSIONCHECK_TITLE" = "起動時にウィジェットの更新をチェックする";
+
+"CREATE_ITEM_MENU" = "新規アイテムの作成...";
+"OPEN_MENU" = "開く";
+"SEND_MAIL_MENU" = "メールの送信...";
+"COPY_MENU" = "コピー";
+"EDIT_MENU" = "編集...";
+"DELETE_MENU" = "削除...";
+
+"LOADING_EVENT" = "予定を読み込んでいます...";
+"NOTHING_EVENT" = "予定がありません";
+"NOTHING_TASK" = "仕事がありません";
+"ALL_DAY_EVENT" = "終日の予定";
+
+"NOW_LOGIN" = "ログインしています...";
+"LOGIN_ERROR" = "ログインできませんでした";
+"LOADING_CALENDARLIST" = "カレンダーリストを取得しています...";
+"NOTHING_CALENDARLIST" = "カレンダーリストを取得できませんでした";
+
+"LOGIN_ERROR_ALERT" = "ログインできませんでした。メールとパスワードを確認してください。";
+"CALENDARLIST_ERROR_ALERT" = "カレンダーリストの取得に失敗しました。時間をおいてから再度お試しください。\nウィジェットをいったん閉じて再起動すると取れることがあります。";
+
+"SHORTMONTH_NAMES" = "1,2,3,4,5,6,7,8,9,10,11,12";
+"SHORTDAY_NAMES" = "日,月,火,水,木,金,土";
+"HEADER_DATE" = "$1/$2($3)";
+"TODAY" = "今日";
+"TOMORROW" = "明日";
+"YESTERDAY" = "昨日";
+
+"TIME_FROM_TO" = "%1 ～ %2";
+"TO_GO_MENUTE" = "この予定まであと %1 分";
+"TO_GO_MENUTES" = "この予定まであと %1 分";
+"TO_GO_HOUR_MENUTES" = "この予定まであと %1 時間 %2 分";
+"TO_GO_HOURS_MENUTES" = "この予定まであと %1 時間 %2 分";
+"TO_GO_HOUR_MENUTE" = "この予定まであと %1 時間 %2 分";
+"TO_GO_HOURS_MENUTE" = "この予定まであと %1 時間 %2 分";
+
+"JUMP_BACKWORD" = "前の日に移動";
+"JUMP_TODAY" = "今日に移動";
+"JUMP_FORWARD" = "次の日に移動";
+"JUMP_BACKWORD_TASK" = "前のページ";
+"JUMP_FORWARD_TASK" = "次のページ";
+
+"CONFIRM_DELETEITEM_MSG" = "本当にこのアイテムを削除してよろしいですか?";
+"DELETE_BUTTON" = "削除";
+"CANCEL_BUTTON" = "キャンセル";
+
+"PREF_GROUP_APPOINTMENT" = "予定";
+"PREF_GROUP_FONT" = "フォント";
+
+"PREF_THEME_TITLE" = "テーマ:";
+"PREF_THEME_DESC" = "";
+"PREF_MAIL_TITLE" = "メール:";
+"PREF_PASSWORD_TITLE" = "パスワード:";
+
+"PREF_DAYCOUNT_TITLE" = "";
+"PREF_DAYCOUNT_DESC" = "一度に予定を表示する日数";
+"PREF_MOVEDAYCOUNT_TITLE" = "";
+"PREF_MOVEDAYCOUNT_DESC" = "移動する日数";
+"PREF_MAILTO_TITLE" = "メール宛先:";
+"PREF_MAILSUBJECT_DESC" = "メール件名:";
+"PREF_24TIME_TITLE" = "24時間表記を利用する";
+"PREF_24TIME_DESC" = "チェックをつけると時刻の表示を12時間表記(AM/PM)を使う代わりに24時間表記で表示します";
+"PREF_UKDATEFORMAT_TITLE" = "UK日付表記を使う";
+"PREF_UKDATEFORMAT_DESC" = "チェックをつけると日付の表示を月/日ではなく日/月で表示します";
+"PREF_SHOWPAST_TITLE" = "過ぎた予定を表示する";
+"PREF_SHOWPAST_DESC" = "チェックをつけると過ぎた予定を表示します。（当日の予定のみに有効）";
+
+"PREF_DEFAULTFONT_TITLE" = "フォント:";
+"PREF_USETHEMETFONT_TITLE" = "テーマのフォントを優先する:";
+"PREF_APPTFONTSIZE_TITLE" = "予定フォントサイズ:";
+"PREF_APPTTIMEFONTSIZE_TITLE" = "時間/場所フォントサイズ:";

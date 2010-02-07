@@ -1,0 +1,23 @@
+
+My Google Calendar / Google Calendar for Today
+
+Copyright (c) 2009-2010, makoto_kw (http://www.makotokw.com)
+All rights reserved.
+
+Release Notes
+
+* v1.1 at 2010/02/07 (for Chrome Extension)
+ - Initial Release for Google Chrome Extension
+
+* v1.0.2 at 2009/07/06 (for Yahoo Widget)
+ - Moved to all image files to theme folder
+ - Supported cutom theme
+ - Added to open Google Calender on browser
+ - Added to filter of caldener
+ - Update new themes by John
+ - Fixed to display events of unselect calendaer
+ - Fixed to display a "All Day Event" for two days
+ - Fixed to move window (likes dock)
+
+* v1.0.0 at 2009/05/01 (for Yahoo Widget)
+ - Initial Release for Yahoo Widget Engine

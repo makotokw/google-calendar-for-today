@@ -1,0 +1,78 @@
+
+"WINDOW_CAPTION" = "My Google Calendar";
+"GO_TO_CALENDAR" = "Click to go to Google Calendar...";
+
+"REFRESH_MENU" = "Refresh";
+
+"VERSIONCHECK_MENU" = "Check for Updates of the Widget";
+"CHECKUPDATEDLG_TITLE1" = "Version %1 of %2 has been released. (This version is %3) \nWould you like to close this widget and go see the webpage?";
+"CHECKUPDATEDLG_TITLE2" = "This vesion is current version";
+"CHECKUPDATEDLG_BTN1"  = "YES";
+"CHECKUPDATEDLG_BTN2"  = "NO";
+"PREF_VERSIONCHECK_TITLE" = "Check for updates of the widget when staring up";
+
+"CREATE_ITEM_MENU" = "Create New Item...";
+"OPEN_MENU" = "Open";
+"SEND_MAIL_MENU" = "Send Mail...";
+"COPY_MENU" = "Copy";
+"EDIT_MENU" = "Edit...";
+"DELETE_MENU" = "Delete...";
+
+"LOADING_EVENT" = "Loading Events...";
+"NOTHING_EVENT" = "No Events";
+"ALL_DAY_EVENT" = "All Day Event";
+
+"NOW_LOGIN" = "Login...";
+"LOGIN_ERROR" = "Can't Login";
+"LOADING_CALENDARLIST" = "Retrieving Calendar List...";
+"NOTHING_CALENDARLIST" = "Can't Retrieve Calendar List...";
+
+"LOGIN_ERROR_ALERT" = "Can't Login. Please comfirm mail and password.";
+"CALENDARLIST_ERROR_ALERT" = "Can't retrieve calendar list. Please restart widget and try again.";
+
+"SHORTMONTH_NAMES" = "Jan,Feb,Mar,Apr,May,June,July,Aug,Sep,Oct,Nov,Dec";
+"SHORTDAY_NAMES" = "Sun,Mon,Tue,Wed,Thu,Fri,Sat";
+"HEADER_DATE" = "$1. $2. ($3.)";
+"TODAY" = "Today";
+"TOMORROW" = "Tomorrow";
+"YESTERDAY" = "Yesterday";
+
+"TIME_FROM_TO" = "%1 to %2";
+"TO_GO_MENUTE" = "%1 minute to GO!";
+"TO_GO_MENUTES" = "%1 minutes to GO!";
+"TO_GO_HOUR_MENUTES" = "%1 hour %2 minutes to GO!";
+"TO_GO_HOURS_MENUTES" = "%1 hours %2 minutes to GO!";
+"TO_GO_HOUR_MENUTE" = "%1 hour %2 minute to GO!";
+"TO_GO_HOURS_MENUTE" = "%1 hours %2 minute to GO!";
+
+"JUMP_BACKWORD" = "Previous Day";
+"JUMP_TODAY" = "Move Today";
+"JUMP_FORWARD" = "Next Day";
+
+"CONFIRM_DELETEITEM_MSG" = "Really delete the item?";
+"DELETE_BUTTON" = "Delete";
+"CANCEL_BUTTON" = "Cancel";
+
+"PREF_GROUP_APPOINTMENT" = "Appointment";
+"PREF_GROUP_FONT" = "Font";
+
+"PREF_THEME_TITLE" = "Theme:";
+"PREF_THEME_DESC" = "";
+"PREF_MAIL_TITLE" = "Mail:";
+"PREF_PASSWORD_TITLE" = "Password:";
+
+"PREF_DAYCOUNT_TITLE" = "";
+"PREF_DAYCOUNT_DESC" = "Number of days to display the event.";
+"PREF_MAILTO_TITLE" = "Mail To:";
+"PREF_MAILSUBJECT_DESC" = "Mail Subject:";
+"PREF_24TIME_TITLE" = "Use 24-hour time format";
+"PREF_24TIME_DESC" = "Check this box to display times in 24-hour format instead of AM/PM.";
+"PREF_UKDATEFORMAT_TITLE" = "Use UK Date Format";
+"PREF_UKDATEFORMAT_DESC" = "Check this box to display date in DD/MM instead of MM/DD.";
+"PREF_SHOWPAST_TITLE" = "Show Past Event";
+"PREF_SHOWPAST_DESC" = "Past Events will show up dimmed when this is checked on Today. They will be hidden when this isn't checked.";
+
+"PREF_DEFAULTFONT_TITLE" = "Font:";
+"PREF_USETHEMETFONT_TITLE" = "Use Font via Theme:";
+"PREF_APPTFONTSIZE_TITLE" = "Event Title Font Size:";
+"PREF_APPTTIMEFONTSIZE_TITLE" = "Event Time/Location Font Size:";

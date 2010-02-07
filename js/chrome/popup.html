@@ -1,0 +1,280 @@
+<meta charset="utf-8"/>
+<style>
+body {
+	font-size:0.8em;
+	font-style:normal;
+	font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', "Segoe UI", Verdana, Geneva, Arial, Helvetica, sans-serif;
+	min-width: 400px;
+	overflow-x: hidden;
+}
+span.message { margin:0 auto; }
+span.indicator { margin:0 auto; }
+#login_form label { display:inline-block; width:80px; }
+.header_r3 a { text-decoration:none; }
+div.day_header { color:#000; }
+ul.event_list { padding:0 6px 0 2px; }
+ul.event_list li { margin:1px 0 1px 0; -webkit-border-radius:3px; padding:4px; color:#fff; line-height:1.4em; }
+ul.event_list li a { text-decoration: none; }
+ul.event_list li a:hover { text-decoration: underline; }
+ul.event_list li a.event_title { color:#fff; }
+ul.event_list li span.event_location { margin-left:.5em; }
+ul.event_list li span.event_timer { display:block; text-align:right; }
+ul.event_list li.past { opacity:0.9; font-size:90%; color:#ddd; }
+ul.event_list li.past span { color:#ddd; }
+ul.event_list li.past a.event_title { color:#ddd; }
+</style>
+<link type="text/css" rel="stylesheet" href="images/theme/gcal/theme.css"/>
+<div id="cal">
+<div class="header">
+	<div class="header_r1">
+		<div class="header_r2">
+			<div class="header_r3"><a id="header_title" href="https://www.google.com/calendar" target="_blank">Google Calendar for Today</a></div>
+		</div>
+	</div>
+</div>
+<div class="content">
+	<div class="content_r1">
+		<div class="content_r2">
+			<div id="content" class="content_r3">
+				<div id="login_form">
+					<fieldset class="account">
+						<legend id="account">Gmail Account</legend>
+						<label id="mail_label" for="mail"></label><input id="mail"/><br/>
+						<label id="password_label" for="password"></label><input id="password" type="password"/>
+					</fieldset>
+					<button id="login">Login</button>
+				</div>
+				<div id="events"></div>
+				<div class="fixed"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="footer">
+	<div class="footer_r1">
+		<div class="footer_r2">
+			<div class="footer_r3">
+				<a href="#" id="prev"></a>
+				<a href="#" id="home"></a>
+				<a href="#" id="next"></a>
+				<!--<a href="#" id="calendar_list"></a>-->
+				<a href="#" id="refresh"></a>
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+<script>
+(function($){
+	var background = chrome.extension.getBackgroundPage(),
+		Blz = background.Blz, w = Blz.Widget, app = background.MyGoogleCal
+		;
+		
+	$('#header_title').attr({title:w.getResourceString('GO_TO_CALENDAR')}).click(function(e){
+		var calendar = $(this).attr('href');
+		chrome.tabs.getAllInWindow(undefined, function(tabs) {
+			for (var i = 0, tab; tab = tabs[i]; i++) {
+				if (tab.url && tab.url.indexOf(calendar) == 0) {
+					chrome.tabs.update(tab.id, {selected: true});
+					return;
+				}
+			}
+			chrome.tabs.create({url:calendar});
+		});
+		return false;
+	});
+	$('#prev').attr({title:w.getResourceString('JUMP_BACKWORD')}).click(function(e){background.showDay(app._offset-1); return false;});
+	$('#home').attr({title:w.getResourceString('JUMP_TODAY')}).click(function(e){background.showDay(0); return false;});
+	$('#next').attr({title:w.getResourceString('JUMP_FORWARD')}).click(function(e){background.showDay(app._offset+1); return false;});
+	$('#refresh').attr({title:w.getResourceString('REFRESH_MENU')}).click(function(e){background.update(true); return false;});
+	
+	// localize
+	var messages = {
+		'account':'PREF_GROUP_ACCOUNT',
+		'mail_label':'PREF_MAIL_TITLE',
+		'password_label':'PREF_PASSWORD_TITLE'
+	};
+	$.each(messages,function(key,value){
+		$('#' + key).html(w.getResourceString(value));
+	});
+	$('#login').html(w.getResourceString('LOGIN_BUTTON')).click(function(){
+		try {
+			var m = $('#mail').val(), p = $('#password').val();
+			w.setPref('mail',m);
+			w.setPref('password',p);
+			app.setUser(m,p);
+		} catch (e) {}
+		update();
+	});
+	
+	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
+		if (request.update) update();
+	});
+	
+	$.fn.extend({
+		_msg: function(message, loading) {
+			$(this).append($('<span/>').addClass((loading) ? 'indicator' : 'message').html(message));
+			return this;
+		}
+	});
+	function update() {
+		var $cal = $('#events').empty();
+		var mail = w.getPref('mail'), pass = w.getPref('password');
+		var $mail = $('#mail').val(mail),
+			$pass = $('#password').val(pass),
+			$login = $('#login');
+			
+		if (app.isLoginRequesting()) {
+			$login.attr('disabled', true);
+			$cal._msg(w.getResourceString('NOW_LOGIN'),true);
+			return;
+		}
+		if (!app.isLogin()) {
+			if (mail!=undefined && mail != undefined) {
+				$cal._msg(w.getResourceString('LOGIN_ERROR'));
+			}
+			$login.attr('disabled', false);
+			$('#login_form').show();
+			return;
+		}
+		$('#login_form').hide();
+		if (app.isCalendarListRequesting()) {
+			$cal._msg(w.getResourceString('LOADING_CALENDARLIST'),true);
+			return;
+		}
+		if (app.gcal.cacheCalendars.length==0){
+			$cal._msg(w.getResourceString('NOTHING_CALENDARLIST'));
+			return;
+		}
+		
+		function getHeaderDateString(date) {
+			var monthNames = w.getResourceString('SHORTMONTH_NAMES').split(',');
+			var dayNames = w.getResourceString('SHORTDAY_NAMES').split(',');
+			return w.getResourceString('HEADER_DATE',[monthNames[date.getMonth()-1],date.getDate(),dayNames[date.getDay()]]);
+		}
+		
+		function getTimeString(date) {
+			if (date) {
+				var use24 = w.getPref('use24HourTime');
+				var partOne = date.getHours(), partTwo = date.getMinutes(), amPM = '';
+				if (use24==0) {
+					if (partOne > 12) {
+						partOne = partOne - 12;
+						amPM = ' PM';
+					} else {
+						amPM = (partOne == 12) ? ' PM' : ' AM';
+					}
+					if (partOne == 0) partOne = 12;
+				}
+				if (partTwo < 10) partTwo = '0' + partTwo;
+				return partOne + ':' + partTwo + amPM;
+			}
+			return '';
+		}
+		
+		function getRemainTime(date) {
+			var now = new Date();
+			var remain = '', minutes = Math.ceil((date - now) / (60 * 1000));
+			if (minutes <= 0) {
+				remain =  w.getResourceString('TO_GO_MENUTE',[1]); // TBD
+			} else if (minutes < 60) {
+				remain = (minutes > 1) ? w.getResourceString('TO_GO_MENUTES',[minutes]) : w.getResourceString('TO_GO_MENUTE',[minutes]);
+			} else if (minutes >= 60) {
+				var hours = Math.floor(Number(minutes) / 60);
+				minutes = minutes - 60 * hours;
+				if (hours > 1) {
+					remain = (minutes > 1) ? w.getResourceString('TO_GO_HOURS_MENUTES',[hours,minutes]) : w.getResourceString('TO_GO_HOURS_MENUTE',[hours,minutes]);
+				} else {
+					remain = (minutes > 1) ? w.getResourceString('TO_GO_HOUR_MENUTES',[hours,minutes]) : w.getResourceString('TO_GO_HOUR_MENUTE',[hours,minutes]);
+				}
+			}
+			return remain;
+		}
+		
+		var now = new Date();
+		var displayDayCount = w.getPref('displayDayCount'), showPast = (w.getPref('showPast') == '1');
+		for (var index = 0, showDays = (!isNaN(displayDayCount)) ? displayDayCount : 2; index < showDays; index++) {
+			var offset = app._offset + index;
+			var cStart = new Blz.GData.Date().addDays(offset).resetHours(), cEnd = cStart.clone().addDays(1);
+			var events = [], cache = app.getAppointments(cStart); // copy the array to add repeaters
+			for (calid in cache.items) {
+				var cal = app.findCalendarById(calid);
+				if (cal && cal.selected) {
+					events = events.concat(cache.items[calid]);
+				} else {
+					//w.print('"'+cal.title+'" calendar is not selected.');
+				}
+			}
+			var header = getHeaderDateString(cStart);
+			if (offset == 0) header += ' - ' + w.getResourceString('TODAY');
+			else if (offset == 1) header += ' - ' + w.getResourceString('TOMORROW');
+			else if (offset == -1) header += ' - ' + w.getResourceString('YESTERDAY');
+			$cal.append($('<div/>').addClass('day_header').html(header));
+			
+			var eventCount = 0, displayEventCount = 0, nextEventIndex = -1;
+			if (events.length > 0) {
+				events.sort(app.appointmentCompare);
+				var $list = $('<ul/>').addClass('event_list');
+				for (var i=0, len=events.length; i<len; i++) {
+					var event = events[i];
+					if (event.allDay) {
+						// hack! filter event for time zone problem
+						if (event.end<=cStart.date||event.start>=cEnd.date) continue;
+					}
+					eventCount++;
+					
+					var location = (event.location && event.location.length > 0) ? '( ' + event.location + ' )' : '';
+					var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT') : w.getResourceString('TIME_FROM_TO',[getTimeString(event.start),getTimeString(event.end)]);
+					var color = event.color;
+					var remain = (now < event.start) ? getRemainTime(event.start) : '';
+					var tooltip = [event.title,time,remain,location].join(' ');
+					
+					var $li = $('<li/>').css({'background-color':color});
+					$li.addClass((i%2==0) ? 'even' : 'odd');
+					if (i==0) $li.addClass('first');
+					if (i==len-1) $li.addClass('last');
+					if (offset == 0) { // Today
+						if (!event.allDay) {
+							if (now > event.end) { // finished event
+								if (!showPast) continue;
+								$li.addClass('past');
+							} else if (now >= event.start && now <= event.end) { // current event
+								$li.addClass('current');
+							} else {
+								$li.addClass('before');
+								if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start 
+									$li.addClass('just_before');
+								}
+								if (-1 == nextEventIndex) { // check Just Before Event?
+									nextEventIndex = i;
+								}
+							}
+						}
+					} else if (offset < 0) { // past
+						$li.addClass('past');
+					}
+					
+					$li.append($('<a/>').attr({href:event.link,target:'_blank'}).addClass('event_title').html(event.title));
+					$li.append($('<span/>').addClass((event.allDay) ? 'event_allday' : 'event_fromto').html(time));
+					if (location != '') $li.append($('<span/>').addClass('event_location').html(location));
+					if (nextEventIndex==i) $li.append($('<span/>').addClass('event_timer').html(remain));
+					$list.append($li.attr({title:tooltip}));
+					displayEventCount++;
+				}
+				$cal.append($list);
+			}
+			if (cache.loading) {
+				$cal._msg(w.getResourceString('LOADING_EVENT'),true);
+			} else if (eventCount == 0) {
+				$cal._msg(w.getResourceString('NOTHING_EVENT'));
+			} else if (displayEventCount == 0) {
+				$cal._msg(w.getResourceString('NOTHING_DISPLAY_EVENT'));
+			}
+			//$('li.just_before',$list).effect("highlight",{},1000);
+		}
+	}
+	update();
+})(jQuery);
+</script>

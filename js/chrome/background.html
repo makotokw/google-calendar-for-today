@@ -1,0 +1,101 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<script src="ext-core.js"></script>
+<script src="calendar.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script>
+(function($){
+	$(document).ready(function() {
+		var w = Blz.Widget, 
+			gcal = Blz.Google.Calendar,
+			app = MyGoogleCal.Application;
+		w.initialize();
+		gcal.source = 'makoto_kw-MyGoogleCal-1';
+		app._offset = 0;
+		app.initialize();
+		function findCurrentEvent() {
+			if (!app.isLogin()||app.isCalendarListRequesting()) {
+				return;
+			}
+			var events = [], start = (new Blz.GData.Date()).resetHours(), cache = app.getAppointments(start);
+			if (!cache) {
+				return;
+			}
+			for (calid in cache.items) {
+				var cal = app.findCalendarById(calid);
+				if (cal && cal.selected) {
+					events = events.concat(cache.items[calid]);
+				}
+			}
+			if (events.length > 0) {
+				events.sort(app.appointmentCompare);
+				var index = -1, now = new Date();
+				for (var i = 0, len = events.length; i < len; i++) {
+					var event = events[i];
+					if (event.allDay) continue;
+					if (now >= event.start && now <= event.end) {
+						index = i;
+					} else if (now < event.start) {
+						if (index == -1) {
+							index = i;
+						}
+						break;
+					}
+				}
+				return (index != -1) ? events[index] : null;
+			}
+			return null;
+		}
+		
+		function showDay(offset) {
+			if (offset != app._offset) {
+				app._offset = offset;
+				update();
+			}
+		}
+		
+		function update(force) {
+			if (force) {
+				w.print("background.update: crear cache");
+				app.clearCache();
+			}
+			// update popup
+			chrome.extension.sendRequest({update:true});
+		}
+		var observer = {
+			onMyGoogleCalLoginCompleted: function(sender, event) {
+				w.print("background.onMyGoogleCalLoginCompleted:");
+				if (event.success) {
+					app.retrieveAllCalendar();
+				}
+				update();
+			},
+			onMyGoogleCalCalendarLoaded: function(sender, event) {
+				w.print("background.onMyGoogleCalCalendarLoaded:"+event.items.length);
+				update();
+			},
+			onMyGoogleCalEventLoaded: function(sender, event) {
+				w.print("background.onMyGoogleCalEventLoaded:"+event.key);
+				update();
+			}
+		};
+		
+		// update for timer
+		setInterval(function(){update();},45*1000);
+		// update for modified events via 5 min
+		setInterval(function(){update(true);},300*1000);
+		
+		app.addObserver(observer);
+		window.Blz = Blz;
+		window.MyGoogleCal = app;
+		window.showDay = showDay;
+		window.update = update;
+	});
+})(jQuery);
+</script>
+</head>
+<body>
+<canvas id="canvas" width="19" height="19">
+</body>
+</html>

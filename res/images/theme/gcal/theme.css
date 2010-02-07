@@ -1,0 +1,98 @@
+.header, .header_r1, .header_r2, .header_r3 { 
+	height:25px; line-height:25px;
+}
+.header_r1 {
+	background: transparent url(top_left.png) left no-repeat;
+	padding-left:20px;
+}
+.header_r2 {
+	background: transparent url(top_right.png) right no-repeat;
+	padding-right:20px;
+}
+.header_r3 {
+	background: transparent url(top.png);
+	text-align: center;
+}
+.content_r1 {
+	background: transparent url(left.png) left repeat-y;
+	padding-left:4px;
+}
+.content_r2 {
+	background: transparent url(right.png) right repeat-y;
+	padding-right:10px;
+}
+.content_r3 {
+	background-color: #fff;
+	/*background: transparent url(center.png);*/
+	padding:8px;
+}
+.footer {
+	height:35px; line-height:35px;
+}
+.footer, .footer_r1, .footer_r2, .footer_r3 { 
+	height:35px; line-height:30px;
+	
+}
+.footer_r1 {
+	background: transparent url(bottom_left.png) left no-repeat;
+	padding-left:20px;
+}
+.footer_r2 {
+	background: transparent url(bottom_right.png) right no-repeat;
+	padding-right:30px;
+}
+.footer_r3 {
+	background: transparent url(bottom.png);
+	position:relative;
+}
+.event_list {
+	list-style: none;
+	margin:0; padding:0;
+}
+.event_list li {
+	padding-left:20px;
+}
+.event_title {
+	display:block;
+}
+.event_remaim {
+	display:block;
+}
+.footer #prev,
+.footer #home,
+.footer #next,
+.footer #refresh,
+.footer #calendar_list {
+	display: inline-block; margin: 7px 2px 0;
+	width:16px; height:16px;
+	background-position: left center;
+	background-repeat: no-repeat;
+}
+.footer #prev {
+	background-image: url(icon_prev.png);
+}
+.footer #home {
+	background-image: url(icon_today.png);
+}
+.footer #next {
+	background-image: url(icon_next.png); 
+}
+.footer #refresh {
+	background-image: url(icon_refresh.png);
+	position:absolute;
+	right:0;
+}
+.footer #calendar_list {
+	background-image: url(icon_schedule.png);
+	position:absolute;
+	right:20px;
+}
+
+span.indicator {
+	background-image: url(icon_loading.gif); 
+	background-position: left center;
+	background-repeat: no-repeat;
+	padding-left:20px;
+	height:20px; line-height:20px;
+	display:block;
+}

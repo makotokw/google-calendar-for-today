@@ -1,0 +1,94 @@
+<html>
+<head>
+<meta charset="utf-8"/>
+<style>
+body {
+	font-size:0.8em;
+	font-style:normal;
+	font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', "Segoe UI", Verdana, Geneva, Arial, Helvetica, sans-serif;
+}
+fieldset.account label { display:inline-block; width:80px; }
+fieldset p { padding:2px; margin:0; }
+</style>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script type="text/javascript">
+(function($){
+	$(document).ready(function() {
+		var background = chrome.extension.getBackgroundPage(),
+			Blz = background.Blz, 
+			w = Blz.Widget, 
+			app = background.MyGoogleCal
+			;
+		
+		// localize
+		var messages = {
+			'account':'PREF_GROUP_ACCOUNT',
+			'mail_label':'PREF_MAIL_TITLE',
+			'password_label':'PREF_PASSWORD_TITLE',
+			'appearance':'PREF_GROUP_APPEARANCE',
+			'display_day_count_label':'PREF_DAYCOUNT_TITLE',
+			'display_day_count_help':'PREF_DAYCOUNT_DESC',
+			'use24_hour_time_label':'PREF_24TIME_TITLE',
+			'use24_hour_time_help':'PREF_24TIME_DESC',
+			'show_past_label':'PREF_SHOWPAST_TITLE',
+			'show_past_help':'PREF_SHOWPAST_DESC'
+		};		
+		$.each(messages,function(key,value){
+			$('#' + key).html(w.getResourceString(value));
+		});
+		
+		var displayDayCount = w.getPref('displayDayCount');
+		$('#mail').val(w.getPref('mail'));
+		$('#password').val(w.getPref('password'));
+		$('#display_day_count').val(!isNaN(displayDayCount) ? displayDayCount : 2);
+		
+		if (w.getPref('use24HourTime')=='1') $('#use24_hour_time').attr('checked',true);
+		if (w.getPref('showPast')=='1') $('#show_past').attr('checked',true);
+		
+		$('#save').html(w.getResourceString('SAVE_BUTTON')).click(function(){
+			var mail = $('#mail').val(), pass = $('#password').val();
+			var displayDayCount = $('#display_day_count').val(),
+				use24HourTime = $('#use24_hour_time').attr('checked'),
+				showPast = $('#show_past').attr('checked');
+			w.setPref('mail',mail);
+			w.setPref('password',pass);
+			if (!isNaN(displayDayCount)) w.setPref('displayDayCount',displayDayCount);
+			w.setPref('use24HourTime',(use24HourTime) ? 1 : 0);
+			w.setPref('showPast',(showPast) ? 1 : 0);
+			app.setUser(mail,pass);
+			background.update();
+			window.close();
+			return;
+		});
+		$('#cancel').html(w.getResourceString('CANCEL_BUTTON')).click(function(){
+			window.close();
+			return;
+		});
+	});
+})(jQuery);
+</script>
+</head>
+<body>
+<div id="login_form">
+	<fieldset class="account">
+		<legend id="account">Gmail Account</legend>
+		<label id="mail_label" for="mail"></label><input id="mail"/><br/>
+		<label id="password_label" for="password"></label><input id="password" type="password"/>
+	</fieldset>
+	<fieldset class="appearance">
+		<legend id="appearance">Appearance</legend>
+		<label id="display_day_count_label" for="display_day_count"></label>
+		<input id="display_day_count" value="2"/>
+		<p id="display_day_count_help"></p>
+		<input id="use24_hour_time" type="checkbox"/>
+		<label id="use24_hour_time_label" for="use24_hour_time"></label>
+		<p id="use24_hour_time_help"></p>
+		<input id="show_past" type="checkbox"/>
+		<label id="show_past_label" for="show_past"></label>
+		<p id="show_past_help"></p>
+	</fieldset>
+	<button id="save">Save</button>
+	<button id="cancel">Cancel</button>
+</div>
+</body>
+</html>

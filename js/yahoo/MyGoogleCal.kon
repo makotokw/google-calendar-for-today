@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<widget version="@VERSION" minimumVersion="4.5">
+	<settings>
+		<setting name="allowCustomObjectAttributes" value="true"/>
+		<setting name="defaultTracking" value="rectangle"/>
+	</settings>
+	<!--
+		My Google Calendar
+	-->
+	<window name="theWindow" width="159" height="171" visible="0" shadow="0" title="My Google Calendar">
+		<onFirstDisplay>
+			<![CDATA[
+				theWindow.hOffset = 10 + screen.availLeft;
+				theWindow.vOffset = (screen.availHeight + screen.availTop) - 238;
+			]]>
+		</onFirstDisplay>
+		<contextMenuItems>
+			<menuItem title="Refresh">
+				<onSelect>
+				<![CDATA[
+					ui.update(true);
+					app.gcal.retrieveCalendar();
+				]]>
+				</onSelect>
+			</menuItem>
+		</contextMenuItems>
+	
+		<image name="topLeft" hOffset="0" vOffset="0" src="Resources/images/theme/dark/top_left.png"/>
+		<image name="top" hOffset="20" vOffset="0" width="99" src="Resources/images/theme/dark/top.png"/>
+		<image name="topRight" hOffset="260" vOffset="0" src="Resources/images/theme/dark/top_right.png"/>
+		<image name="left" hOffset="0" vOffset="0" fillMode="tile" src="Resources/images/theme/dark/left.png"/>
+		<image name="fill" hOffset="0" vOffset="25" fillMode="tile" src="Resources/images/theme/dark/center.png" visible="false"/>
+		<image name="right" hOffset="0" vOffset="0" fillMode="tile" src="Resources/images/theme/dark/right.png"/>
+		<image name="bottomLeft" hOffset="0" vOffset="55" src="Resources/images/theme/dark/bottom_left.png"/>
+		<image name="bottom" hOffset="30" vOffset="158" src="Resources/images/theme/dark/bottom.png"/>
+		<image name="bottomRight" hOffset="129" vOffset="158" src="Resources/images/theme/dark/bottom_right.png"/>
+		<image name="backwardCap" src="Resources/images/theme/dark/icon_prev.png" onMouseDown="ui.showDay(ui.currDayOffset-1);"/>
+		<image name="todayCap" src="Resources/images/theme/dark/icon_today.png" onMouseDown="ui.showDay(0);"/>
+		<image name="forwardCap" src="Resources/images/theme/dark/icon_next.png" onMouseDown="ui.showDay(ui.currDayOffset+1);"/>
+		<image name="switchListIcon" src="Resources/images/theme/dark/icon_schedule.png" onMouseDown="ui.onCalendarPopop(this);"/>
+	</window>
+	
+	<action trigger="onLoad">
+	<![CDATA[
+		try {
+			include("calendar.js");
+			include("ext-core.js");
+			Blz.Google.Calendar.source = 'makoto_kw-MyGoogleCal-1';
+			Blz.Widget.widgetid = "mygooglecalendar";
+			Blz.Widget.widgetname = theWindow.title;
+			Blz.Widget.widgetversion = (widget.version) ? widget.version : "";
+			app = MyGoogleCal.Application;
+			app.initialize();
+			ui = MyGoogleCal.UI;
+			// themes
+			include("Resources/images/theme/dark/theme.js");
+			include("Resources/images/theme/metal/theme.js");
+			include("Resources/images/theme/gcal/theme.js");
+			for (var tName in ui.themes) {
+				ui.themes[tName].path = 'Resources/images/theme/'+tName+'/';
+			}
+			ui.initialize(app);
+		} catch (e) {
+			alert(e);
+		}
+	]]>
+	</action>
+
+	<action trigger="onUnload">
+		ui.close();
+	</action>
+	
+	<action trigger="onWakeFromSleep">
+		ui.update(true);
+	</action>
+
+	<action trigger="onPreferencesChanged">
+		ui.onPreferenceChanged();
+		reconnectTimer.ticking = true;
+	</action>
+
+	<timer name="updateTimer" interval="45" ticking="false">
+		<onTimerFired>
+			ui.update();
+		</onTimerFired>
+	</timer>
+	
+	<timer name="reconnectTimer" interval="300" ticking="false">
+		<onTimerFired>
+			ui.update(true);
+			reconnectTimer.ticking = false;
+		</onTimerFired>
+	</timer>
+
+	<!-- *********************************** -->
+	<!-- Preferences -->
+	<!-- *********************************** -->
+
+	<!-- PREF GROUP General -->
+	<preference name="lastWindowSize" type="text" hidden="true" defaultValue="159,171"/>
+	<preference name="mail" type="text" defaultValue=""/>
+	<preference name="password" type="text" secure="yes" defaultValue=""/>
+	<preference name="theme" type="popup" title="Theme:">
+		<defaultValue>dark</defaultValue>
+		<option>dark</option>
+		<option>metal</option>
+		<option>gcal</option>
+	</preference>
+	<preference name="selectedCalendarList" type="text" hidden="true" defaultValue=""/>
+
+	<!-- PREF GROUP Appointment -->
+	<preferenceGroup name="pgAppointment" title="Appointment"/>
+	<preference name="displayDayCount" group="pgAppointment" type="text" defaultValue="2"/>
+	<preference name="useUkDateFormat" group="pgAppointment" type="checkbox" defaultValue="0"/>
+	<preference name="use24HourTime" group="pgAppointment" type="checkbox" defaultValue="0"/>
+	<preference name="showPast" group="pgAppointment" type="checkbox" defaultValue="1"/>
+	
+	<!-- PREF GROUP FONT -->
+	<preferenceGroup name="pgFont" title="Font"/>
+	<preference name="defaultFont" group="pgFont" type="font" defaultValue="Arial"/>
+	<preference name="useThemeFont" group="pgFont" type="checkbox" defaultValue="0"/>
+	<preference name="apptItemTitleFontSize" group="pgFont" type="text" defaultValue="12"/>
+	<preference name="apptItemTimeFontSize" group="pgFont" type="text" defaultValue="12"/>
+
+	<about-box>
+		<image>Resources/images/yahoo/about.png</image>
+		<about-version>
+			<font>Arial</font>
+			<size>20</size>
+			<hOffset>355</hOffset>
+			<vOffset>100</vOffset>
+			<color>#ffffff</color>
+			<shadow>
+				<color>#333333</color>
+				<hOffset>1</hOffset>
+				<vOffset>1</vOffset>
+			</shadow>
+		</about-version>
+		<text font="Verdana" hOffset="20" vOffset="185" size="10" color="#ffffff" data="Ext Core Library 3.0 Copyright(c) 2006-2009, Ext JS, LLC." url="http://extjs.com/">
+			<shadow>
+				<color>#333333</color>
+				<hOffset>1</hOffset>
+				<vOffset>1</vOffset>
+			</shadow>
+		</text>
+		<text font="Verdana" hOffset="20" vOffset="200" size="10" color="#ffffff" data="My Google Calendar (c) 2009-2010 makoto_kw (makoto.kw@gmail.com)" url="http://www.makotokw.com">
+			<shadow>
+				<color>#333333</color>
+				<hOffset>1</hOffset>
+				<vOffset>1</vOffset>
+			</shadow>
+		</text>
+	</about-box>
+
+</widget>
