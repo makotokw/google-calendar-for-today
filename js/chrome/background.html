@@ -16,7 +16,7 @@
 		
 		w.initialize();
 		gcal.source = 'makoto_kw-MyGoogleCal-1';
-		gcal.useGoogleLogin = false;
+		gcal.useGoogleLogin = (w.getPref('useGoogleApps')!='1') ? false : true;
 		app._offset = 0;
 		app.initialize();
 		
@@ -50,9 +50,9 @@
 			if (app.isLogin()) {
 				var event = app.findFocusEvent();
 				ba.setIcon({path:'icon.png'});
-				ba.setBadgeBackgroundColor({color:[0, 24, 208, 255]});
 				if (!event) {
-					ba.setBadgeText({text:''});
+					badgeText = '';
+					ba.setBadgeText({text:badgeText});
 					ba.setTitle({'title':defaultTitle});
 				} else {
 					var now = new Date();
@@ -68,10 +68,17 @@
 					}
 					ba.setTitle({'title':tooltip});
 				}
+				if (/[0-9]+m/.test(badgeText)) { // within 60min
+					ba.setBadgeBackgroundColor({color:[208, 0, 24, 255]});
+				} else {
+					ba.setBadgeBackgroundColor({color:[0, 24, 208, 255]});
+				}
+				
 			} else {
 				ba.setIcon({path:'icon_glay.png'});
 				ba.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
-				ba.setBadgeText({text:'?'});
+				badgeText = '?';
+				ba.setBadgeText({text:badgeText});
 				ba.setTitle({'title':defaultTitle});
 			}
 		}
@@ -141,7 +148,7 @@
 		function getRemainTimeString(date) {
 			var now = new Date();
 			var remain = '', minutes = Math.ceil((date - now) / (60 * 1000));
-			if (minutes <= 0) {
+			if (minutes == 1) {
 				remain =  w.getResourceString('TO_GO_MINUTE',[1]); // TBD
 			} else if (minutes < 60) {
 				remain = (minutes > 1) ? w.getResourceString('TO_GO_MINUTES',[minutes]) : w.getResourceString('TO_GO_MINUTE',[minutes]);

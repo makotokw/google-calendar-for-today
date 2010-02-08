@@ -16,7 +16,20 @@ Blz.Google.Calendar = {
 	cacheCalendars:[],
 	initialize: function() {
 		this.notifyMethodPrefix = 'onGoogleCalendar';
-		this.sessionUrl = this.baseUrl+'/default/private/full';
+	},
+	getUrl: function() {
+		var domain = this.getMailDomain();
+		if (domain!='gmail.com') { 
+			return "http://www.google.com/calendar/hosted/"+domain; 
+		}
+		return this.url;
+	},
+	getAccount: function() {
+		var mail = this.mail || '';
+		return (mail=='' || mail.indexOf('@gmail.com')!=-1) ? 'default' : mail;
+	},
+	createSessionUrl: function() {
+		return this.baseUrl+'/'+this.getAccount()+'/private/full';
 	},
 	retrieveCalendar: function(context) {
 		var w = Blz.Widget;
@@ -38,9 +51,9 @@ Blz.Google.Calendar = {
 		}
 		
 		// http://www.google.com/calendar/feeds/default/allcalendars/full
-		var u = this.baseUrl + '/default/allcalendars/full';
+		var u = this.baseUrl + '/'+this.getAccount()+'/allcalendars/full';
 		if (this.gsessionid!='') u += '?gsessionid='+this.gsessionid;
-		w.print("Blz.Google.Calendar.retrieveCalendar: try to fetch: " + u);
+		//w.print("Blz.Google.Calendar.retrieveCalendar: try to fetch: " + u);
 		var params = {};
 		var headers = this.getAuthHeader();
 		this.isCalendarListRequesting = true;
@@ -48,7 +61,7 @@ Blz.Google.Calendar = {
 			try {
 				gcal.isCalendarListRequesting = false;
 				var xhr = e.response, success = e.success, content = e.data, calendars = [];
-				w.print("Blz.Google.Calendar.retrieveCalendar: Http Status = "+xhr.status);
+				if (xhr.status != 200) w.print("Blz.Google.Calendar.retrieveCalendar: Http Status = "+xhr.status);
 				if (success) {
 					calendars = gcal.parseCalendars(content);
 				} else {
@@ -121,12 +134,12 @@ Blz.Google.Calendar = {
 			this.session(u);
 			return false;
 		}
-		w.print("Blz.Google.Calendar.retrieveEvent: try to fetch " + u);
+		//w.print("Blz.Google.Calendar.retrieveEvent: try to fetch " + u);
 		var headers = this.getAuthHeader();
 		Blz.Ajax.get(u, function(e) {
 			try {
 				var xhr = e.response, success = e.success, content = e.data, events = [];
-				w.print("Blz.Google.Calendar.retrieveEvent: Http Status = "+xhr.status);
+				if (xhr.status != 200) w.print("Blz.Google.Calendar.retrieveEvent: Http Status = "+xhr.status);
 				//var xhr = e.response;
 				//var headres = xhr.getAllResponseHeaders;
 				//for (prop in headres) Blz.Widget.print(prop+":"+headres[prop]);

@@ -14,6 +14,9 @@ span.indicator { margin:0 auto; }
 div.day_header { color:#000; }
 ul.event_list { padding:0 6px 0 2px; }
 ul.event_list li { margin:1px 0 1px 0; -webkit-border-radius:3px; padding:4px; color:#fff; line-height:1.4em; }
+ul.event_list li.current { border-left:red 3px solid; }
+ul.event_list li.before { border-left:yellow 3px solid; }
+ul.event_list li.just_before { border-left:red 3px solid; }
 ul.event_list li a { text-decoration: none; }
 ul.event_list li a:hover { text-decoration: underline; }
 ul.event_list li a.event_title { color:#fff; }
@@ -36,14 +39,6 @@ ul.event_list li.past a.event_title { color:#ddd; }
 	<div class="content_r1">
 		<div class="content_r2">
 			<div id="content" class="content_r3">
-				<div id="login_form">
-					<fieldset class="account">
-						<legend id="account">Gmail Account</legend>
-						<label id="mail_label" for="mail"></label><input id="mail"/><br/>
-						<label id="password_label" for="password"></label><input id="password" type="password"/>
-					</fieldset>
-					<button id="login">Login</button>
-				</div>
 				<div id="events"></div>
 				<div class="fixed"></div>
 			</div>
@@ -73,7 +68,7 @@ ul.event_list li.past a.event_title { color:#ddd; }
 		;
 		
 	$('#header_title').attr({title:w.getResourceString('GO_TO_CALENDAR')}).click(function(e){
-		var calendar = $(this).attr('href');
+		calendar = app.getCalendarUrl();
 		chrome.tabs.getAllInWindow(undefined, function(tabs) {
 			for (var i = 0, tab; tab = tabs[i]; i++) {
 				if (tab.url && tab.url.indexOf(calendar) == 0) {
@@ -91,26 +86,6 @@ ul.event_list li.past a.event_title { color:#ddd; }
 	$('#next').attr({title:w.getResourceString('JUMP_FORWARD')}).click(function(e){background.showDay(app._offset+1); return false;});
 	$('#refresh').attr({title:w.getResourceString('REFRESH_MENU')}).click(function(e){background.update(true); return false;});
 	
-	// localize
-	var messages = {
-		'account':'PREF_GROUP_ACCOUNT',
-		'mail_label':'PREF_MAIL_TITLE',
-		'password_label':'PREF_PASSWORD_TITLE'
-	};
-	$.each(messages,function(key,value){
-		$('#' + key).html(w.getResourceString(value));
-	});
-	$('#login').html(w.getResourceString('LOGIN_BUTTON')).click(function(){
-		try {
-			var m = $('#mail').val(), p = $('#password').val();
-			w.setPref('mail',m);
-			w.setPref('password',p);
-			app.setUser(m,p);
-		} catch (e) {}
-		update();
-	});
-	$('#login_form').hide();
-	
 	chrome.extension.onRequest.addListener(function(request, sender, sendResponse) {
 		if (request.update) update();
 	});
@@ -123,26 +98,15 @@ ul.event_list li.past a.event_title { color:#ddd; }
 	});
 	function update() {
 		var $cal = $('#events').empty();
-		var mail = w.getPref('mail'), pass = w.getPref('password');
-		var $mail = $('#mail').val(mail),
-			$pass = $('#password').val(pass),
-			$login = $('#login');
-			
+		
 		if (app.isLoginRequesting()) {
-			$login.attr('disabled', true);
 			$cal._msg(w.getResourceString('NOW_LOGIN'),true);
 			return;
 		}
 		if (!app.isLogin()) {
 			$cal._msg(w.getResourceString('SESSION_ERROR_ALERT',[app.gcal.url]));
-			//if (mail!=undefined && mail != undefined) {
-			//	$cal._msg(w.getResourceString('LOGIN_ERROR'));
-			//}
-			//$login.attr('disabled', false);
-			//$('#login_form').show();
 			return;
 		}
-		//$('#login_form').hide();
 		if (app.isCalendarListRequesting()) {
 			$cal._msg(w.getResourceString('LOADING_CALENDARLIST'),true);
 			return;
@@ -202,9 +166,10 @@ ul.event_list li.past a.event_title { color:#ddd; }
 							} else if (now >= event.start && now <= event.end) { // current event
 								$li.addClass('current');
 							} else {
-								$li.addClass('before');
 								if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start 
 									$li.addClass('just_before');
+								} else {
+									$li.addClass('before');
 								}
 								if (-1 == nextEventIndex) { // check Just Before Event?
 									nextEventIndex = i;

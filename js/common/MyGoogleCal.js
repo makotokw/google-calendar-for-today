@@ -31,15 +31,23 @@ MyGoogleCal.Application = {
 			w.print("MyGoogleCal.Application.initialize: "+e);
 		}
 	},
-	setUser: function(mail, pass) {
+	getCalendarUrl: function() {
+		return this.gcal.getUrl();
+	},
+	login: function(mail, pass) {
 		var w = Blz.Widget, gcal = this.gcal;
 		if (gcal.mail != gcal.fixMail(mail) || gcal.pass != pass) {
 			this.clearCache();
 			gcal.login(mail,pass);
 		}
 	},
-	session: function() {
-		if (!this.isLogin()) { // TBD
+	logout: function() {
+		if (this.gcal.logout()) {
+			this.clearCache();
+		}
+	},
+	session: function(force) {
+		if (!this.isLogin()||force) { // TBD
 			this.gcal.session();
 		}
 	},
@@ -91,36 +99,36 @@ MyGoogleCal.Application = {
 		if (!this.isLogin()||this.isCalendarListRequesting()) {
 			return;
 		}
-		var events = [], start = (new Blz.GData.Date()).resetHours(), cache = this.getAppointments(start);
-		if (!cache) {
-			return;
-		}
-		for (calid in cache.items) {
-			var cal = this.findCalendarById(calid);
-			if (cal && cal.selected) {
-				events = events.concat(cache.items[calid]);
-			}
-		}
-		if (events.length > 0) {
-			events.sort(this.appointmentCompare);
-			var index = -1, now = new Date();
-			for (var i=0, len=events.length; i<len; i++) {
-				var event = events[i];
-				if (event.allDay) continue; // ignore all day event
-				if (now > event.end) continue; // finished event
-				if (now >= event.start && now <= event.end) { // current event
-					//index = i;
-				} else {
-					if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start 
-						index = i; // prefer just before
-					}
-					if (-1 == index) { // check Just Before Event?
-						index = i;
-					}
-					break;
+		for (var offset = 0; offset < 3; offset++) {
+			var events = [], start = (new Blz.GData.Date()).addDays(offset).resetHours(), cache = this.getAppointments(start);
+			if (!cache) return;
+			for (calid in cache.items) {
+				var cal = this.findCalendarById(calid);
+				if (cal && cal.selected) {
+					events = events.concat(cache.items[calid]);
 				}
 			}
-			return (index != -1) ? events[index] : null;
+			if (events.length > 0) {
+				events.sort(this.appointmentCompare);
+				var index = -1, now = new Date();
+				for (var i=0, len=events.length; i<len; i++) {
+					var event = events[i];
+					if (event.allDay) continue; // ignore all day event
+					if (now > event.end) continue; // finished event
+					if (now >= event.start && now <= event.end) { // current event
+						//index = i;
+					} else {
+						if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start 
+							index = i; // prefer just before
+						}
+						if (-1 == index) { // check Just Before Event?
+							index = i;
+						}
+						break;
+					}
+				}
+				if (index != -1) return events[index];
+			}
 		}
 		return;
 	},

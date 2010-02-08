@@ -5,7 +5,7 @@
  * Copyright (c) 2006-2010, makoto_kw (makoto.kw@gmail.com)
  */
 Blz.GData = {
-	sessionUrl:'',
+	source:'',
 	hasSession:false,
 	useGoogleLogin:true,
 	loginUrl: 'https://www.google.com/accounts/ClientLogin', // ClientLogin for installed app
@@ -13,7 +13,6 @@ Blz.GData = {
 	isLogin:false,
 	mail:'',
 	pass:'',
-	source:'',
 	authContent:'',
 	gsessionid:'',
 	
@@ -22,6 +21,14 @@ Blz.GData = {
 			mail += '@gmail.com';
 		}
 		return mail;
+	},
+	
+	getMailDomain: function() {
+		var mail = this.mail || '';
+		if (mail.indexOf('@') != -1) {
+			return mail.substr(mail.indexOf('@')+1); 
+		}
+		return 'gmail.com';
 	},
 	
 	login: function(mail, pass, sessionUrl) {
@@ -43,7 +50,7 @@ Blz.GData = {
 			service: 'cl',
 			source: this.source
 		}
-		var u = this.loginUrl, s = sessionUrl || this.sessionUrl;
+		var u = this.loginUrl, s = sessionUrl || this.createSessionUrl();
 		var gdata = this;
 		gdata.isLoginRequesting = true;
 		Blz.Ajax.post(u, postData, function(e) {
@@ -64,8 +71,21 @@ Blz.GData = {
 			}
 		});
 	},
+	logout: function() {
+		if (this.isLoginRequesting) {
+			Blz.Widget.print("Blz.GData.logout: logout failed");
+			return; // TODO:
+		}
+		// reset
+		this.mail = '';
+		this.pass = '';
+		this.isLogin = false;
+		this.hasSession = false;
+		this.authContent = '';
+		this.gsessionid = '';
+	},
 	session:function(url) {
-		var gdata = this, url = url || this.sessionUrl;
+		var gdata = this, url = url || this.createSessionUrl();
 		gdata.isLoginRequesting = true;
 		gdata.gsessionid = '';
 		
@@ -106,7 +126,7 @@ Blz.GData = {
 		var headers = {
 			'GData-Version': 2
 		};
-		if (this.isGoogleLogin) {
+		if (this.useGoogleLogin) {
 			headers['Authorization'] = 'GoogleLogin auth=' + this.authContent;
 		}
 		return headers;
