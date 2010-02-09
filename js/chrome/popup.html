@@ -59,15 +59,18 @@ ul.event_list li.past a.event_title { color:#ddd; }
 	</div>
 </div>
 </div>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
-<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/jquery-ui.min.js"></script>
+<script src="jquery.min.js"></script>
+<script src="jquery-ui.min.js"></script>
 <script>
 (function($){
 	var background = chrome.extension.getBackgroundPage(),
 		Blz = background.Blz, w = Blz.Widget, app = background.MyGoogleCal
 		;
 		
-	$('#header_title').attr({title:w.getResourceString('GO_TO_CALENDAR')}).click(function(e){
+	$('#header_title')
+		.html(w.getResourceString('WINDOW_CAPTION'))
+		.attr({title:w.getResourceString('GO_TO_CALENDAR')})
+		.click(function(e){
 		calendar = app.getCalendarUrl();
 		chrome.tabs.getAllInWindow(undefined, function(tabs) {
 			for (var i = 0, tab; tab = tabs[i]; i++) {

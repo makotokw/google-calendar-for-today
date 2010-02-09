@@ -3,7 +3,7 @@
 <meta charset="utf-8"/>
 <script src="ext-core.js"></script>
 <script src="calendar.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+<script src="jquery.min.js"></script>
 <script>
 (function($){
 	$(document).ready(function() {
@@ -11,7 +11,7 @@
 			gcal = Blz.Google.Calendar,
 			app = MyGoogleCal.Application;
 			
-		var defaultTitle = 'Google Calendar for Today';
+		var defaultTitle = w.getResourceString('WINDOW_CAPTION');
 		var canvas = document.getElementById('canvas'), canvasContext = canvas.getContext('2d'), icon = document.getElementById('icon');
 		
 		w.initialize();

@@ -113,7 +113,7 @@
 		 	<fileset dir="${res}/images/chrome"/>
 		</copy>
 		<copy todir="${resources}/images">
-		 	<fileset dir="${res}/images" includes="theme/**"/>
+		 	<fileset dir="${res}/images" includes="theme/gcal/**"/>
 		</copy>
 	</target>
 	
