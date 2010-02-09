@@ -40,18 +40,18 @@ fieldset p { padding:2px; margin:0; }
 			$('#' + key).html(w.getResourceString(value));
 		});
 		
-		var displayDayCount = w.getPref('displayDayCount');
+		var $mail = $('#mail'), $password = $('#password');
 		if (w.getPref('useGoogleApps')=='1') $('#use_google_apps').attr('checked',true);
-		var $mail = $('#mail').val(w.getPref('mail'));
-		var $password = $('#password').val(w.getPref('password'));
+		$mail.val(w.getPref('mail'));
+		$password.val(w.getPref('password'));
 		$('#use_google_apps').change(function(){
 			var checked = $(this).attr('checked');
 			$mail.attr({'disabled':!checked});
 			$password.attr({'disabled':!checked});
 		}).change();
 		
+		var displayDayCount = w.getPref('displayDayCount');
 		$('#display_day_count').val(!isNaN(displayDayCount) ? displayDayCount : 2);
-		
 		if (w.getPref('use24HourTime')=='1') $('#use24_hour_time').attr('checked',true);
 		if (w.getPref('showPast')=='1') $('#show_past').attr('checked',true);
 		
