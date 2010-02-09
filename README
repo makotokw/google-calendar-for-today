@@ -6,6 +6,9 @@ All rights reserved.
 
 Release Notes
 
+* v1.1.2 at 2010/02/09(Chrome Extension)
+ - Chrome: Fixed Option page problems
+
 * v1.1.1 at 2010/02/08(Chrome Extension)
  - Supported to work with browser session (without Client Login)
  - Supported Google Apps Account
