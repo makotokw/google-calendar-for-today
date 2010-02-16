@@ -6,7 +6,7 @@
 	<property name="tools" value="tools"/>
 	<property name="yuicompressor" value="tools/yuicompressor/yuicompressor-2.4.2.jar"/>
 	<property name="js" value="js"/>
-	<property name="res" value="res"/>
+	<property name="res" value="resource"/>
 	
 	<target name="package_yahoo" description="make package for yahoo! widget">
 		<property name="projectname" value="MyGoogleCalendar"/>
