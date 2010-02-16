@@ -191,10 +191,10 @@ Blz.Google.Calendar = {
 		return events;
 	},
 	createEvent: function(e) {
-		var id='', link='', title='', description = '', author='', location='';
+		var w = Blz.Widget, id='', link='', title='', description = '', author='', location='';
 		var start = 0, end = 0, allDay = 0;
 		try {
-			//for (prop in e) Blz.Widget.print('event['+prop+"]="+e[prop]);
+			//for (prop in e) w.print('event['+prop+"]="+e[prop]);
 			id = e.id;
 			link = e.link[0]['href'] || e.link['href']; // TODO:
 			title = e.title;
@@ -208,9 +208,16 @@ Blz.Google.Calendar = {
 				if (when[0]) when = when[0];
 				start = when['startTime'] || 0;
 				end = when['endTime'] || 0;
-				//Blz.Widget.print('start='+start);
-				//Blz.Widget.print('end='+end);
+				//w.print('start='+start);
+				//w.print('end='+end);
 			}
+			// parse
+			var gstart = Blz.GData.Date.fromIso8601(start), gend = Blz.GData.Date.fromIso8601(end);
+			allDay = (gstart.isDateOnly() || gend.isDateOnly()) ? 1 : 0;
+			start = gstart.date;
+			end = gend.date;
+			
+			/*
 			if (match = this.rgxAllDay.exec(start)) {
 				allDay = 1;
 				start = new Date(match[1], match[2]-1, match[3], 0, 0, 0, 0);
@@ -223,7 +230,7 @@ Blz.Google.Calendar = {
 			}
 			else if (match = this.rgxDate.exec(end)) {
 				end = new Date(match[1], match[2]-1, match[3], match[4], match[5], match[6], 0);
-			}
+			}*/
 		} catch (e) {
 			Blz.Widget.print("Blz.Google.Calendar.createEvent: " + e);
 		}
