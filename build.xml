@@ -108,12 +108,15 @@
 			<fileset file="${js}/common/MyGoogleCal.js"/>
 		</concat>
 		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/manifest.json"/>
+		
+		<!-- copy icons -->
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
-		 	<fileset dir="${res}/images/chrome"/>
+		 	<fileset dir="${res}/images/chrome" includes="icon*"/>
 		</copy>
 		<copy todir="${resources}/images">
-		 	<fileset dir="${res}/images" includes="theme/gcal/**"/>
+		 	<fileset dir="${res}/images/chrome" excludes="icon*"/>
+			<fileset dir="${res}/images" includes="theme/gcal/**"/>
 		</copy>
 	</target>
 	

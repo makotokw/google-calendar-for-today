@@ -17,6 +17,9 @@ Blz.Google.Calendar = {
 	initialize: function() {
 		this.notifyMethodPrefix = 'onGoogleCalendar';
 	},
+	isHosted: function() { // is Google Apps
+		return (this.getMailDomain() != 'gmail.com');
+	},
 	getUrl: function() {
 		var domain = this.getMailDomain();
 		if (domain!='gmail.com') { 
