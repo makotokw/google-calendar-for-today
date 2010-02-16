@@ -6,6 +6,9 @@ All rights reserved.
 
 Release Notes
 
+* v1.1.4
+ - Fixed to retrieve calendar list. In v1.1.3 or older, In v1.1.3 or older, no event is displayed if you have ONE calendar.
+
 * v1.1.3 at 2010/02/16(Chrome Extension)
  - Parsed more strictly Iso8601 string for timezone problem
  - Chrome: Added now marker to popup.html
