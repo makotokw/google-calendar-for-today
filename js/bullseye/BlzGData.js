@@ -38,10 +38,9 @@ Blz.GData = {
 		if (mail=='' && pass=='')
 			return false;
 		
-		if (mail && pass) {
-			this.mail = this.fixMail(mail);
-			this.pass = pass;
-		}
+		this.mail = this.fixMail(mail);
+		this.pass = pass;
+		
 		// TODO:
 		var postData = {
 			accountType: 'HOSTED_OR_GOOGLE',

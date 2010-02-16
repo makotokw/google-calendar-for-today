@@ -31,6 +31,9 @@ MyGoogleCal.Application = {
 			w.print("MyGoogleCal.Application.initialize: "+e);
 		}
 	},
+	isGoogleApps: function() {
+		return this.gcal.isHosted();
+	},
 	getCalendarUrl: function() {
 		return this.gcal.getUrl();
 	},
