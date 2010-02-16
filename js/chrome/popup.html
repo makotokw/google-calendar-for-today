@@ -13,7 +13,8 @@ span.indicator { margin:0 auto; }
 .header_r3 a { text-decoration:none; }
 div.day_header { color:#000; }
 ul.event_list { padding:0 6px 0 2px; }
-ul.event_list li { margin:1px 0 1px 0; -webkit-border-radius:3px; padding:4px; color:#fff; line-height:1.4em; }
+
+ul.event_list li { margin:1px 4px 1px 4px; -webkit-border-radius:3px; padding:4px; color:#fff; line-height:1.4em; }
 ul.event_list li.current { border-left:red 3px solid; }
 ul.event_list li.before { border-left:yellow 3px solid; }
 ul.event_list li.just_before { border-left:red 3px solid; }
@@ -22,9 +23,11 @@ ul.event_list li a:hover { text-decoration: underline; }
 ul.event_list li a.event_title { color:#fff; }
 ul.event_list li span.event_location { margin-left:.5em; }
 ul.event_list li span.event_timer { display:block; text-align:right; }
-ul.event_list li.past { opacity:0.9; font-size:90%; color:#ddd; }
+ul.event_list li.past { opacity:0.8; font-size:90%; color:#ddd; }
 ul.event_list li.past span { color:#ddd; }
 ul.event_list li.past a.event_title { color:#ddd; }
+ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; text-align:center; border-top:2px solid #ff0000; height:0; margin:2px 0 2px 0; padding:0; overflow:hidden; opacity:1; }
+
 </style>
 <link type="text/css" rel="stylesheet" href="images/theme/gcal/theme.css"/>
 <div id="cal">
@@ -143,6 +146,8 @@ ul.event_list li.past a.event_title { color:#ddd; }
 			if (events.length > 0) {
 				events.sort(app.appointmentCompare);
 				var $list = $('<ul/>').addClass('event_list');
+				if (offset == 0) $list.addClass('today');
+				var $nowListItem = $('<li/>').addClass('nowmarker').attr({title:now.toLocaleTimeString()}).html(now.toLocaleTimeString()), isAppendedNow = false;
 				for (var i=0, len=events.length; i<len; i++) {
 					var event = events[i];
 					if (event.allDay) {
@@ -163,11 +168,15 @@ ul.event_list li.past a.event_title { color:#ddd; }
 					if (i==len-1) $li.addClass('last');
 					if (offset == 0) { // Today
 						if (!event.allDay) {
+							//w.print("now = " + now);
+							//w.print("event.start = " + event.start);
+							//w.print("event.end = " + event.end)
 							if (now > event.end) { // finished event
 								if (!showPast) continue;
 								$li.addClass('past');
 							} else if (now >= event.start && now <= event.end) { // current event
 								$li.addClass('current');
+								isAppendedNow = true;
 							} else {
 								if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start 
 									$li.addClass('just_before');
@@ -177,6 +186,10 @@ ul.event_list li.past a.event_title { color:#ddd; }
 								if (-1 == nextEventIndex) { // check Just Before Event?
 									nextEventIndex = i;
 								}
+							}
+							if (!isAppendedNow && now < event.start) {
+								$list.append($nowListItem);
+								isAppendedNow = true;
 							}
 						}
 					} else if (offset < 0) { // past
@@ -189,6 +202,9 @@ ul.event_list li.past a.event_title { color:#ddd; }
 					if (nextEventIndex==i) $li.append($('<span/>').addClass('event_timer').html(remain));
 					$list.append($li.attr({title:tooltip}));
 					displayEventCount++;
+				}
+				if (offset == 0 && !isAppendedNow) { // Today
+					$list.append($nowListItem);
 				}
 				$cal.append($list);
 			}
