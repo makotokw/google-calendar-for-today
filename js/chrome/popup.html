@@ -9,11 +9,12 @@ body {
 }
 span.message { margin:0 auto; }
 span.indicator { margin:0 auto; }
-#login_form label { display:inline-block; width:80px; }
+
+#cal { position:relative; padding:10px; }
+#cal_close { position:absolute; top:0; right:0; }
 .header_r3 a { text-decoration:none; }
 div.day_header { color:#000; }
 ul.event_list { padding:0 6px 0 2px; }
-
 ul.event_list li { margin:1px 4px 1px 4px; -webkit-border-radius:3px; padding:4px; color:#fff; line-height:1.4em; }
 ul.event_list li.current { border-left:red 3px solid; }
 ul.event_list li.before { border-left:yellow 3px solid; }
@@ -31,6 +32,7 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 </style>
 <link type="text/css" rel="stylesheet" href="images/theme/gcal/theme.css"/>
 <div id="cal">
+<img id="cal_close" src="images/close.png"/>
 <div class="header">
 	<div class="header_r1">
 		<div class="header_r2">
@@ -69,7 +71,9 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 	var background = chrome.extension.getBackgroundPage(),
 		Blz = background.Blz, w = Blz.Widget, app = background.MyGoogleCal
 		;
-		
+	$('#cal_close').attr({title:w.getResourceString('CLOSE_MENU')}).click(function(){
+		window.close();
+	});
 	$('#header_title')
 		.html(w.getResourceString('WINDOW_CAPTION'))
 		.attr({title:w.getResourceString('GO_TO_CALENDAR')})
@@ -110,7 +114,14 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 			return;
 		}
 		if (!app.isLogin()) {
-			$cal._msg(w.getResourceString('SESSION_ERROR_ALERT',[app.gcal.url]));
+			if (app.isGoogleApps()) {
+				// required client login, go to option
+				$cal._msg(w.getResourceString('SESSION_ERROR_ALERT', [chrome.extension.getURL("options.html")]));
+			}
+			else {
+				// In Google account, extension will work with browser session. 
+				$cal._msg(w.getResourceString('SESSION_ERROR_ALERT', [app.getCalendarUrl()]));
+			}
 			return;
 		}
 		if (app.isCalendarListRequesting()) {
