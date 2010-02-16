@@ -142,7 +142,7 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 			else if (offset == -1) header += ' - ' + w.getResourceString('YESTERDAY');
 			$cal.append($('<div/>').addClass('day_header').html(header));
 			
-			var eventCount = 0, displayEventCount = 0, nextEventIndex = -1;
+			var eventCount = 0, displayEventWithoutAllDayCount = 0, displayEventCount = 0, nextEventIndex = -1;
 			if (events.length > 0) {
 				events.sort(app.appointmentCompare);
 				var $list = $('<ul/>').addClass('event_list');
@@ -187,6 +187,7 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 									nextEventIndex = i;
 								}
 							}
+							displayEventWithoutAllDayCount++;
 							if (!isAppendedNow && now < event.start) {
 								$list.append($nowListItem);
 								isAppendedNow = true;
@@ -203,7 +204,7 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 					$list.append($li.attr({title:tooltip}));
 					displayEventCount++;
 				}
-				if (offset == 0 && !isAppendedNow) { // Today
+				if (offset == 0 && !isAppendedNow && displayEventWithoutAllDayCount >0) { // Today
 					$list.append($nowListItem);
 				}
 				$cal.append($list);

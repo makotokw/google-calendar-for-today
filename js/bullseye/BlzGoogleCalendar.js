@@ -81,16 +81,21 @@ Blz.Google.Calendar = {
 		}, params, headers);
 	},
 	parseCalendars: function(xmltext) {
-		var calendars = [];
+		var w = Blz.Widget, calendars = [];
 		try {
 			var feed = Blz.XML.Parser.string2object(xmltext);
-			for (var i = 0, len = feed.entry.length; i < len; i++) {
-				var cal = this.createCalendar(feed.entry[i]);
-				//for (prop in cal) Blz.Widget.print('cal.'+prop+":"+cal[prop]);
-				calendars.push(cal);
+			if (feed.entry.length != null) {
+				for (var i = 0, len = feed.entry.length; i < len; i++) {
+					var cal = this.createCalendar(feed.entry[i]);
+					//for (prop in cal) w.print('cal.'+prop+":"+cal[prop]);
+					calendars.push(cal);
+				}
+			} else {
+				var ev = this.createCalendar(feed.entry);
+				calendars.push(ev);
 			}
 		} catch (ex) {
-			Blz.Widget.print('Blz.Google.Calendar.parseCalendars:'+ex);
+			w.print('Blz.Google.Calendar.parseCalendars:'+ex);
 		}
 		this.cacheCalendars = calendars;
 		return calendars;
