@@ -6,7 +6,7 @@
 	<property name="tools" value="tools"/>
 	<property name="yuicompressor" value="tools/yuicompressor/yuicompressor-2.4.2.jar"/>
 	<property name="js" value="js"/>
-	<property name="res" value="res"/>
+	<property name="res" value="resource"/>
 	
 	<target name="package_yahoo" description="make package for yahoo! widget">
 		<property name="projectname" value="MyGoogleCalendar"/>
@@ -108,11 +108,10 @@
 			<fileset file="${js}/common/MyGoogleCal.js"/>
 		</concat>
 		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/manifest.json"/>
-		
-		<!-- copy icons -->
+				<!-- copy icons -->
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
-		 	<fileset dir="${res}/images/chrome" includes="icon*"/>
+		 	<fileset dir="${res}/images/chrome"includes="icon*"/>
 		</copy>
 		<copy todir="${resources}/images">
 		 	<fileset dir="${res}/images/chrome" excludes="icon*"/>

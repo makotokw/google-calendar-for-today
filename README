@@ -4,15 +4,17 @@ My Google Calendar / Google Calendar for Today
 Copyright (c) 2009-2010, makoto_kw (http://www.makotokw.com)
 All rights reserved.
 
+Yahoo Widget: http://widgets.yahoo.com/widgets/my-google-calendar
+Chrome Extension: https://chrome.google.com/extensions/detail/mkaaneppndljkmpgdcglnpfagfhjhipc
+
 Release Notes
 
-* v1.1.4
- - Fixed to retrieve calendar list. In v1.1.3 or older, In v1.1.3 or older, no event is displayed if you have ONE calendar.
- - Chrome: Added a close button to popup.html
- 
+* v1.1.4 (Dev)
+ - Fixed to retrieve calendar list. In v1.1.3 or older, no event is displayed if you have ONE calendar.
+
 * v1.1.3 at 2010/02/16(Chrome Extension)
  - Parsed more strictly Iso8601 string for timezone problem
- - Chrome: Added a now marker to popup.html
+ - Chrome: Added now marker to popup.html
 
 * v1.1.2 at 2010/02/09(Chrome Extension)
  - Chrome: Fixed Option page problems
@@ -29,7 +31,7 @@ Release Notes
  - YWE: Moved to all image files to theme folder
  - YWE: Supported custom theme
  - YWE: Added to open Google Calendar on browser
- - YWE: Added to filter of calendar
+ - YWE: Added filter of calendar
  - YWE: Update new themes by John
  - YWE: Fixed to display events of unselected calendar
  - YWE: Fixed to display a "All Day Event" for two days
