@@ -37,21 +37,15 @@
 			<fileset file="${js}/common/MyGoogleCal.js"/>
 			<fileset file="${js}/${long}/MyGoogleCalUI.js"/>
 		</concat>
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js"/>
-		</java>
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js --nomunge"/>
-		</java>
+
 		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/MyGoogleCal.kon"/>
 		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/widget.xml"/>
 		
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
 			<fileset dir="${js}/${long}/Resources"/>
-		 	<fileset dir="${res}"/>
+		 	<fileset dir="${res}" includes="images/theme/**,images/yahoo/**"/>
 		</copy>
-		
 		<delete>
 			<fileset dir="${dist}">
 				<include name="${projectname}_${short}_${version}.widget"/>
