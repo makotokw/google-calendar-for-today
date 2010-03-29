@@ -32,7 +32,7 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 </style>
 <link type="text/css" rel="stylesheet" href="images/theme/gcal/theme.css"/>
 <div id="cal">
-<img id="cal_close" src="images/close.png"/>
+<!--<img id="cal_close" src="images/close.png"/>-->
 <div class="header">
 	<div class="header_r1">
 		<div class="header_r2">
@@ -71,9 +71,9 @@ ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; 
 	var background = chrome.extension.getBackgroundPage(),
 		Blz = background.Blz, w = Blz.Widget, app = background.MyGoogleCal
 		;
-	$('#cal_close').attr({title:w.getResourceString('CLOSE_MENU')}).click(function(){
+	/*$('#cal_close').attr({title:w.getResourceString('CLOSE_MENU')}).click(function(){
 		window.close();
-	});
+	});*/
 	$('#header_title')
 		.html(w.getResourceString('WINDOW_CAPTION'))
 		.attr({title:w.getResourceString('GO_TO_CALENDAR')})

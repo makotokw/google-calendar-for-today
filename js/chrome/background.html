@@ -65,6 +65,7 @@
 						badgeText = shortRemain;
 						ba.setBadgeText({text:badgeText});
 						animateIcon();
+						notification(event);
 					}
 					ba.setTitle({'title':tooltip});
 				}
@@ -81,6 +82,26 @@
 				ba.setBadgeText({text:badgeText});
 				ba.setTitle({'title':defaultTitle});
 			}
+		}
+		
+		var notified = {}
+		function notification(event)
+		{
+			try {
+				var interval = 300 * 1000; // 5min
+				var now = (new Date()).getTime(), start = event.start.getTime(), lastNotifiedAt = notified[event.id];
+				if ((!lastNotifiedAt && now <= start && now + interval >= start) || lastNotifiedAt - now > interval) {
+					var nc = window.notifications || window.webkitNotifications;
+					var location = (event.location && event.location.length > 0) ? '( ' + event.location + ' )' : '';
+					var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT') : w.getResourceString('TIME_FROM_TO',[app.getTimeString(event.start),app.getTimeString(event.end)]);
+					var body = time + " " +  location;
+					var notification = nc.createNotification('icon_128.png', event.title, body);
+					notification.show();
+					setTimeout(function(){notification.cancel();},15000);
+					notified[event.id] = now;
+				}
+			} 
+			catch (e) {}
 		}
 		
 		function animateIcon(speed, frames) {

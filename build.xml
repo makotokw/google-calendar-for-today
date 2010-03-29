@@ -49,10 +49,10 @@
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
 			<fileset dir="${js}/${long}/Resources"/>
-		 	<fileset dir="${res}"includes="images/theme/**,images/yahoo/**"/>
+		 	<fileset dir="${res}" includes="images/theme/**,images/yahoo/**"/>
 		</copy>
 		
-<delete>
+		<delete>
 			<fileset dir="${dist}">
 				<include name="${projectname}_${short}_${version}.widget"/>
 				<include name="${projectname}_${short}_${version}.zip"/>
@@ -117,6 +117,11 @@
 		<copy todir="${resources}/images">
 		 	<fileset dir="${res}/images/chrome" excludes="icon*"/>
 			<fileset dir="${res}/images" includes="theme/gcal/**"/>
+		</copy>
+		
+		<property name="desktop" value="C:/Users/makoto_kw/Desktop"/> 
+		<copy todir="${desktop}/${projectname}.crx" overwrite="true">
+			<fileset dir="${contents}"/>
 		</copy>
 	</target>
 	

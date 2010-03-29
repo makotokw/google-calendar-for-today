@@ -11,6 +11,8 @@ Release Notes
 
 * v1.1.4 (Dev)
  - Fixed to retrieve calendar list. In v1.1.3 or older, no event is displayed if you have ONE calendar.
+ - Chrome: Added notifaction window (window is closed after 15 seconds)
+ - Chrome: Localized manifest also
 
 * v1.1.3 at 2010/02/16(Chrome Extension)
  - Parsed more strictly Iso8601 string for timezone problem
