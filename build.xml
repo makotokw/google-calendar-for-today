@@ -49,10 +49,10 @@
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
 			<fileset dir="${js}/${long}/Resources"/>
-		 	<fileset dir="${res}"/>
+		 	<fileset dir="${res}"includes="images/theme/**,images/yahoo/**"/>
 		</copy>
 		
-		<delete>
+<delete>
 			<fileset dir="${dist}">
 				<include name="${projectname}_${short}_${version}.widget"/>
 				<include name="${projectname}_${short}_${version}.zip"/>
@@ -108,10 +108,11 @@
 			<fileset file="${js}/common/MyGoogleCal.js"/>
 		</concat>
 		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/manifest.json"/>
-				<!-- copy icons -->
+		
+		<!-- copy icons -->
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
-		 	<fileset dir="${res}/images/chrome"includes="icon*"/>
+		 	<fileset dir="${res}/images/chrome" includes="icon*"/>
 		</copy>
 		<copy todir="${resources}/images">
 		 	<fileset dir="${res}/images/chrome" excludes="icon*"/>

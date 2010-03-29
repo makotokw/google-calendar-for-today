@@ -901,7 +901,7 @@ MyGoogleCal.UI = {
 	onPreferenceChanged: function() {
 		var w = Blz.Widget, app = this.app;
 		this.applyTheme(w.getPref('theme'));
-		app.setUser(w.getPref('mail'),w.getPref('password'));
+		app.login(w.getPref('mail'),w.getPref('password'));
 		this.update();
 	},
 	
