@@ -136,8 +136,7 @@
 		function update(force) {
 			if (force) {
 				w.print("background.update: crear cache");
-				app.clearCache();
-				app.session();
+				app.retrieveAllCalendar();
 			}
 			updateBadge();
 			// update popup

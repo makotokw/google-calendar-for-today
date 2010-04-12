@@ -95,6 +95,7 @@ MyGoogleCal.Application = {
 		return false;
 	},
 	retrieveAllCalendar: function() {
+		this.clearCache();
 		this.gcal.retrieveCalendar();
 	},
 	
