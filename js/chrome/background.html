@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8"/>
@@ -87,6 +88,7 @@
 		var notified = {}
 		function notification(event)
 		{
+			return; // TODO: test
 			try {
 				var interval = 300 * 1000; // 5min
 				var now = (new Date()).getTime(), start = event.start.getTime(), lastNotifiedAt = notified[event.id];
