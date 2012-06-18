@@ -7,7 +7,7 @@
 if (typeof(Blz.Google)=='undefined') Blz.Google={};
 Blz.Google.Calendar = {
 	url:'https://www.google.com/calendar/',
-	baseUrl: 'http://www.google.com/calendar/feeds',
+	baseUrl: 'https://www.google.com/calendar/feeds',
 	rgxAllDay: /^([0-9]+)-([0-9]+)-([0-9]+)$/,
 	rgxDate: /^([0-9]+)-([0-9]+)-([0-9]+)T([0-9]+):([0-9]+):([0-9]+)/,
 	isLoading: false,
@@ -23,7 +23,7 @@ Blz.Google.Calendar = {
 	getUrl: function() {
 		var domain = this.getMailDomain();
 		if (domain!='gmail.com') { 
-			return "http://www.google.com/calendar/hosted/"+domain; 
+			return "https://www.google.com/calendar/hosted/"+domain; 
 		}
 		return this.url;
 	},

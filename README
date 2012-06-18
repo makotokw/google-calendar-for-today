@@ -1,7 +1,9 @@
-My Google Calendar / Google Calendar for Today
+Today's Schedule in Google Calendar™
 ==============================================
 
-Copyright (c) 2009-2010, makoto_kw (http://www.makotokw.com)
+Shows today's shedule in Google Calendar™.
+
+Copyright (c) 2009-2011, makoto_kw (http://www.makotokw.com)
 All rights reserved.
 
 Yahoo! Widget: http://widgets.yahoo.com/widgets/my-google-calendar
@@ -11,9 +13,13 @@ Source: http://github.com/makotokw/google-calendar-for-today
 Release Notes
 =============
 
-* v1.1.5 (Dev)
+* Master
  - Chrome: Added notifaction window (window is closed after 15 seconds)
+
+* v1.1.6 at 2011/03/17 (Chrome Extension)
+ - Chrome: Changed title for Branding Guidelines: http://code.google.com/intl/ja/chrome/webstore/branding.html
  - Chrome: Fixed to fetch calendarlist when refresh button is clicked
+ - Chrome: Use ssl
  
 * v1.1.4 at 2010/04/12(Chrome Extension)
  - Fixed to retrieve calendar list. In v1.1.3 or older, no event is displayed if you have ONE calendar.

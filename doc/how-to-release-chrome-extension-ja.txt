@@ -1,0 +1,12 @@
+
+Chrom Extensionのリリース方法
+
+1. version.txtを更新する
+2. 年を超えた場合は以下のファイルのcopyrightを更新する
+ README
+ LICENSE
+3. antでpackage_chromeを実行する 
+4. 下記のURLからchrome web storeにアクセスし、dist/GoogleCalendarForToday_crx_x.x.x.zipを アップロードする
+ https://chrome.google.com/webstore/developer/dashboard
+ Google Calendar for Today > Edit > Update file
+ 
