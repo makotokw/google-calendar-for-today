@@ -1,36 +1,129 @@
 body {
-  font-size:0.8em;
-  font-style:normal;
-  font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', "Segoe UI", Verdana, Geneva, Arial, Helvetica, sans-serif;
+    font-size: 0.8em;
+    font-style: normal;
+    font-family: 'ヒラギノ角ゴ Pro W3', 'Hiragino Kaku Gothic Pro', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', "Segoe UI", Verdana, Geneva, Arial, Helvetica, sans-serif;
 }
 
-body.popup {
-  min-width: 400px;
-  overflow-x: hidden;
+.popup {
+    min-width: 400px;
+    overflow-x: hidden;
 }
 
-span.message { margin:0 auto; }
-span.indicator { margin:0 auto; }
+.options {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
 
-#cal { position:relative; padding:10px; }
-#cal_close { position:absolute; top:0; right:0; }
-.header_r3 a { text-decoration:none; }
-div.day_header { color:#000; }
-ul.event_list { padding:0 6px 0 2px; }
-ul.event_list li { margin:1px 4px 1px 4px; -webkit-border-radius:3px; padding:4px; color:#fff; line-height:1.4em; }
-ul.event_list li.current { border-left:red 3px solid; }
-ul.event_list li.before { border-left:yellow 3px solid; }
-ul.event_list li.just_before { border-left:red 3px solid; }
-ul.event_list li a { text-decoration: none; }
-ul.event_list li a:hover { text-decoration: underline; }
-ul.event_list li a.event_title { color:#fff; }
-ul.event_list li span.event_location { margin-left:.5em; }
-ul.event_list li span.event_timer { display:block; text-align:right; }
-ul.event_list li.past { opacity:0.8; font-size:90%; color:#ddd; }
-ul.event_list li.past span { color:#ddd; }
-ul.event_list li.past a.event_title { color:#ddd; }
-ul.event_list li.nowmarker { -webkit-border-radius:0; background-color:#ff0000; text-align:center; border-top:2px solid #ff0000; height:0; margin:2px 0 2px 0; padding:0; overflow:hidden; opacity:1; }
+.message {
+    margin: 0 auto;
+}
 
-#mail_label, #password_label { display:inline-block; width:100px; padding-right:.5em; text-align:right; }
-#mail, #password { width:300px; }
-fieldset p { padding:2px; margin:0; }
+.indicator {
+    margin: 0 auto;
+}
+
+#cal {
+    position: relative;
+    padding: 10px;
+}
+
+#cal_close {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.header_r3 a {
+    text-decoration: none;
+}
+
+.day_header {
+    color: #000;
+}
+
+.event_list {
+    padding: 0 6px 0 2px;
+}
+
+.event_list li {
+    margin: 1px 4px 1px 4px;
+    -webkit-border-radius: 3px;
+    padding: 4px;
+    color: #fff;
+    line-height: 1.4em;
+}
+
+.event_list .current {
+    border-left: red 3px solid;
+}
+
+.event_list .before {
+    border-left: yellow 3px solid;
+}
+
+.event_list .just_before {
+    border-left: red 3px solid;
+}
+
+.event_list li a {
+    text-decoration: none;
+}
+
+.event_list li a:hover {
+    text-decoration: underline;
+}
+
+.event_list li a.event_title {
+    color: #fff;
+}
+
+.event_list li .event_location {
+    margin-left: .5em;
+}
+
+.event_list li .event_timer {
+    display: block;
+    text-align: right;
+}
+
+.event_list .past {
+    opacity: 0.8;
+    font-size: 90%;
+    color: #ddd;
+}
+
+ul.event_list .past span {
+    color: #ddd;
+}
+
+ul.event_list .past .event_title {
+    color: #ddd;
+}
+
+.event_list .nowmarker {
+    -webkit-border-radius: 0;
+    background-color: #ff0000;
+    text-align: center;
+    border-top: 2px solid #ff0000;
+    height: 0;
+    margin: 2px 0 2px 0;
+    padding: 0;
+    overflow: hidden;
+    opacity: 1;
+}
+
+/*#mail_label,
+#password_label { 
+  display:inline-block; width:100px; padding-right:.5em; text-align:right;
+  }*/
+/*#mail, 
+#password { 
+  width:300px;
+  }*/
+/*fieldset p { 
+  padding:2px; margin:0;
+  }*/
+
+.copyright {
+    text-align: center;
+}

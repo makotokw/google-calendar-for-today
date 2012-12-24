@@ -12,7 +12,7 @@
     calendar = app.getCalendarUrl();
     chrome.tabs.getAllInWindow(undefined, function(tabs) {
       for (var i = 0, tab; tab = tabs[i]; i++) {
-        if (tab.url && tab.url.indexOf(calendar) == 0) {
+        if (tab.url && tab.url.indexOf(calendar) === 0) {
           chrome.tabs.update(tab.id, {selected: true});
           window.close();
           return;
@@ -50,7 +50,7 @@
         $cal._msg(w.getResourceString('SESSION_ERROR_ALERT', [chrome.extension.getURL("options.html")]));
       }
       else {
-        // In Google account, extension will work with browser session. 
+        // In Google account, extension will work with browser session.
         $cal._msg(w.getResourceString('SESSION_ERROR_ALERT', [app.getCalendarUrl()]));
       }
       return;
@@ -59,7 +59,7 @@
       $cal._msg(w.getResourceString('LOADING_CALENDARLIST'),true);
       return;
     }
-    if (app.gcal.cacheCalendars.length==0){
+    if (!app.gcal.cacheCalendars.length){
       $cal._msg(w.getResourceString('NOTHING_CALENDARLIST'));
       return;
     }
@@ -70,7 +70,7 @@
       var offset = app._offset + index;
       var cStart = new Blz.GData.Date().addDays(offset).resetHours(), cEnd = cStart.clone().addDays(1);
       var events = [], cache = app.getAppointments(cStart); // copy the array to add repeaters
-      for (calid in cache.items) {
+      for (var calid in cache.items) {
         var cal = app.findCalendarById(calid);
         if (cal && cal.selected) {
           events = events.concat(cache.items[calid]);
@@ -79,7 +79,7 @@
         }
       }
       var header = app.getHeaderDateString(cStart);
-      if (offset == 0) header += ' - ' + w.getResourceString('TODAY');
+      if (offset === 0) header += ' - ' + w.getResourceString('TODAY');
       else if (offset == 1) header += ' - ' + w.getResourceString('TOMORROW');
       else if (offset == -1) header += ' - ' + w.getResourceString('YESTERDAY');
       $cal.append($('<div/>').addClass('day_header').html(header));
@@ -88,7 +88,7 @@
       if (events.length > 0) {
         events.sort(app.appointmentCompare);
         var $list = $('<ul/>').addClass('event_list');
-        if (offset == 0) $list.addClass('today');
+        if (offset === 0) $list.addClass('today');
         var $nowListItem = $('<li/>').addClass('nowmarker').attr({title:now.toLocaleTimeString()}).html(now.toLocaleTimeString()), isAppendedNow = false;
         for (var i=0, len=events.length; i<len; i++) {
           var event = events[i];
@@ -105,10 +105,14 @@
           var tooltip = [event.title,time,remain,location].join(' ');
           
           var $li = $('<li/>').css({'background-color':color});
-          $li.addClass((i%2==0) ? 'even' : 'odd');
-          if (i==0) $li.addClass('first');
-          if (i==len-1) $li.addClass('last');
-          if (offset == 0) { // Today
+          $li.addClass((i%2 === 0) ? 'even' : 'odd');
+          if (i === 0) {
+            $li.addClass('first');
+          }
+          if (i == len-1) {
+            $li.addClass('last');
+          }
+          if (offset === 0) { // Today
             if (!event.allDay) {
               //w.print("now = " + now);
               //w.print("event.start = " + event.start);
@@ -120,7 +124,7 @@
                 $li.addClass('current');
                 isAppendedNow = true;
               } else {
-                if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start 
+                if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start
                   $li.addClass('just_before');
                 } else {
                   $li.addClass('before');
@@ -146,16 +150,16 @@
           $list.append($li.attr({title:tooltip}));
           displayEventCount++;
         }
-        if (offset == 0 && !isAppendedNow && displayEventWithoutAllDayCount >0) { // Today
+        if (offset === 0 && !isAppendedNow && displayEventWithoutAllDayCount >0) { // Today
           $list.append($nowListItem);
         }
         $cal.append($list);
       }
       if (cache.loading) {
         $cal._msg(w.getResourceString('LOADING_EVENT'),true);
-      } else if (eventCount == 0) {
+      } else if (eventCount === 0) {
         $cal._msg(w.getResourceString('NOTHING_EVENT'));
-      } else if (displayEventCount == 0) {
+      } else if (displayEventCount === 0) {
         $cal._msg(w.getResourceString('NOTHING_DISPLAY_EVENT'));
       }
       //$('li.just_before',$list).effect("highlight",{},1000);

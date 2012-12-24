@@ -1,8 +1,8 @@
 (function($){
   $(document).ready(function() {
     var background = chrome.extension.getBackgroundPage(),
-      Blz = background.Blz, 
-      w = Blz.Widget, 
+      Blz = background.Blz,
+      w = Blz.Widget,
       app = background.MyGoogleCal
       ;
     
@@ -20,7 +20,7 @@
       'use24_hour_time_help':'PREF_24TIME_DESC',
       'show_past_label':'PREF_SHOWPAST_TITLE',
       'show_past_help':'PREF_SHOWPAST_DESC'
-    };    
+    };
     $.each(messages,function(key,value){
       $('#' + key).html(w.getResourceString(value));
     });
@@ -42,7 +42,7 @@
     
     $('#save').html(w.getResourceString('SAVE_BUTTON')).click(function(){
       var useGoogleApps = $('#use_google_apps').attr('checked'),
-        mail = $('#mail').val(), 
+        mail = $('#mail').val(),
         pass = $('#password').val();
       var displayDayCount = $('#display_day_count').val(),
         use24HourTime = $('#use24_hour_time').attr('checked'),

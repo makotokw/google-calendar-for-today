@@ -19,10 +19,10 @@
       if (!url) return;
       if ((url.indexOf('//www.google.com/calendar/') != -1) ||
         ((url.indexOf('//www.google.com/a/') != -1) && (url.lastIndexOf('/acs') == url.length - 4)) ||
-        (url.indexOf('//www.google.com/accounts/') != -1)) 
+        (url.indexOf('//www.google.com/accounts/') != -1))
       {
         // The login screen isn't helpful
-        if (url.indexOf('https://www.google.com/accounts/ServiceLogin?') == 0) {
+        if (url.indexOf('https://www.google.com/accounts/ServiceLogin?') === 0) {
           return;
         }
         //w.print("background.onTabUpdated: loginStatusChanged");
@@ -58,7 +58,7 @@
             badgeText = shortRemain;
             ba.setBadgeText({text:badgeText});
             animateIcon();
-            notification(event);
+            // notification(event);
           }
           ba.setTitle({'title':tooltip});
         }
@@ -78,24 +78,23 @@
     }
     
     var notified = {};
-    function notification(event)
-    {
+    function notification(event) {
       return; // TODO: test notification
-      try {
-        var interval = 300 * 1000; // 5min
-        var now = (new Date()).getTime(), start = event.start.getTime(), lastNotifiedAt = notified[event.id];
-        if ((!lastNotifiedAt && now <= start && now + interval >= start) || lastNotifiedAt - now > interval) {
-          var nc = window.notifications || window.webkitNotifications;
-          var location = (event.location && event.location.length > 0) ? '( ' + event.location + ' )' : '';
-          var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT') : w.getResourceString('TIME_FROM_TO',[app.getTimeString(event.start),app.getTimeString(event.end)]);
-          var body = time + " " +  location;
-          var notification = nc.createNotification('icon_128.png', event.title, body);
-          notification.show();
-          setTimeout(function(){notification.cancel();},15000);
-          notified[event.id] = now;
-        }
-      }
-      catch (e) {}
+      // try {
+      //   var interval = 300 * 1000; // 5min
+      //   var now = (new Date()).getTime(), start = event.start.getTime(), lastNotifiedAt = notified[event.id];
+      //   if ((!lastNotifiedAt && now <= start && now + interval >= start) || lastNotifiedAt - now > interval) {
+      //     var nc = window.notifications || window.webkitNotifications;
+      //     var location = (event.location && event.location.length > 0) ? '( ' + event.location + ' )' : '';
+      //     var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT') : w.getResourceString('TIME_FROM_TO',[app.getTimeString(event.start),app.getTimeString(event.end)]);
+      //     var body = time + " " +  location;
+      //     var notification = nc.createNotification('icon_128.png', event.title, body);
+      //     notification.show();
+      //     setTimeout(function(){notification.cancel();},15000);
+      //     notified[event.id] = now;
+      //   }
+      // }
+      // catch (e) {}
     }
     
     function animateIcon(speed, frames) {
@@ -133,8 +132,10 @@
         app.retrieveAllCalendar();
       }
       updateBadge();
-      // update popup
-      chrome.extension.sendRequest({update:true});
+      try {
+        // update popup
+        chrome.extension.sendRequest({update:true});
+      } catch (e) {}
     }
     
     function getHeaderDateString(date) {

@@ -1,37 +1,83 @@
 <!doctype html>
 <head>
 <meta charset="utf-8"/>
-<link type="text/css" rel="stylesheet" href="main.css"/>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="main.css"/>
 <script src="jquery.min.js"></script>
 <script src="options.js"></script>
 </head>
-<body>
-<h1 id="logo"></h1>
-<div id="login_form">
+<body class="options">
+<div class="container">
+  <div class="page-header">
+    <header>
+    	<h1 id="logo"></h1>
+    </header>
+  </div>
+ <div class="well">
+<form id="login_form" class="form-horizontal">
 	<fieldset class="account">
 		<legend id="account">Calendar Account</legend>
-		<input id="use_google_apps" type="checkbox"/>
-		<label id="use_google_apps_label" for="use_google_apps"></label><br/>
-		<label id="mail_label" for="mail"></label><input id="mail"/><br/>
-		<label id="password_label" for="password"></label><input id="password" type="password"/>
+		<div class="control-group">
+			<label for="use_google_apps">
+				<input id="use_google_apps" type="checkbox"/>
+				<span id="use_google_apps_label"></span>
+			</label>
+		</div>
+			
+		<div class="control-group">
+			<label id="mail_label" for="mail" class="control-label"></label>
+			<div class="controls">
+				<input id="mail" type="email" placeholder="Email"/>
+			</div>
+		</div>
+		<div class="control-group">
+			<label id="password_label" for="password" class="control-label"></label>
+			<div class="controls">
+				<input id="password" type="password" placeholder="Password"/>
+			</div>
+		</div>
 	</fieldset>
 	<fieldset class="appearance">
 		<legend id="appearance">Appearance</legend>
-		<label id="display_day_count_label" for="display_day_count"></label>
-		<input id="display_day_count" value="2"/>
-		<p id="display_day_count_help"></p>
-		<input id="use24_hour_time" type="checkbox"/>
-		<label id="use24_hour_time_label" for="use24_hour_time"></label>
-		<p id="use24_hour_time_help"></p>
-		<input id="show_past" type="checkbox"/>
-		<label id="show_past_label" for="show_past"></label>
-		<p id="show_past_help"></p>
+		<div class="control-group">
+			<label id="display_day_count_label" for="display_day_count" class="control-label"></label>
+
+			<div class="controls">
+				<input id="display_day_count" type="text" value="2">
+					<span class="help-block" id="display_day_count_help"></span>
+				</input>
+			</div>
+		</div>
+			
+		<div class="control-group">
+			<div class="controls">
+				<label for="use24_hour_time">
+					<input id="use24_hour_time" type="checkbox"/>
+					<span id="use24_hour_time_label"></span>
+				</label>
+				<span id="use24_hour_time_help" class="help-block"></span>
+			</div>
+		</div>
+			
+		<div class="control-group">
+			<div class="controls">
+				<label for="show_past">
+					<input id="show_past" type="checkbox"/>
+					<span id="show_past_label"></span>
+				</label>
+				<span id="show_past_help" class="help-block"></span>
+			</div>
+		</div>
 	</fieldset>
-	<button id="save">Save</button>
-	<button id="cancel">Cancel</button>
+	<div class="form-actions">
+		<button id="save"  type="submit" class="btn btn-primary">Save changes</button>
+		<button id="cancel" type="button" class="btn">Cancel</button>
+	</div>
+</form>
 </div>
-<div id="footer">
-	<p id="copyright">Copyright &copy; 2009-2012, makoto_kw (<a href="http://www.makotokw.com" target="_blank">http://www.makotokw.com</a>)</p>
+<footer class="footer">
+  <p id="copyright" class="copyright">Copyright &copy; 2009-2012, makoto_kw (<a href="http://www.makotokw.com" target="_blank">http://www.makotokw.com</a>)</p>
+</footer>
 </div>
 </body>
 </html>
