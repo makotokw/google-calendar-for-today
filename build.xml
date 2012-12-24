@@ -1,84 +1,12 @@
 <?xml version="1.0" ?>
-<project default="deploy_yahoo">
+<project default="unpacked_chrome">
 	<property name="projectname" value="TodaysSchedule"/>
 	<loadfile property="version" srcfile="version.txt"/>
 	<property name="dist" value="dist"/>
 	<property name="tools" value="tools"/>
 	<property name="yuicompressor" value="tools/yuicompressor/yuicompressor-2.4.2.jar"/>
-	<property name="js" value="js"/>
+	<property name="src" value="src"/>
 	<property name="res" value="resource"/>
-	
-	<target name="package_yahoo" description="make package for yahoo! widget">
-		<property name="projectname" value="MyGoogleCalendar"/>
-		<property name="long" value="yahoo"/>
-		<property name="short" value="yw"/>
-		<property name="contents" value="${dist}/${long}/${projectname}.widget/Contents"/>
-		<property name="resources" value="${contents}/Resources"/>
-		
-		<mkdir dir="${dist}"/>
-		<delete dir="${dist}/${long}"/>
-		<mkdir dir="${contents}"/>
-		
-		<copy todir="${contents}">
-		 	<fileset dir="${js}/${long}" includes="*.kon,*.xml"/>
-			<fileset file="${js}/bullseye/ext-core.js"/>
-		</copy>
-		<concat destfile="${contents}/calendar.js">
-			<fileset file="${js}/bullseye/BlzBrowserYahoo.js"/>
-			<fileset file="${js}/bullseye/Blz.js"/>
-			<fileset file="${js}/bullseye/BlzAjax.js"/>
-			<fileset file="${js}/bullseye/BlzEvent.js"/>
-			<fileset file="${js}/bullseye/BlzXml.js"/>
-			<fileset file="${js}/bullseye/BlzWidget.js"/>
-			<fileset file="${js}/bullseye/BlzWidgetYahoo.js"/>
-			<fileset file="${js}/bullseye/BlzGData.js"/>
-			<fileset file="${js}/bullseye/BlzGDataDate.js"/>
-			<fileset file="${js}/bullseye/BlzGoogleCalendar.js"/>
-			<fileset file="${js}/common/MyGoogleCal.js"/>
-			<fileset file="${js}/${long}/MyGoogleCalUI.js"/>
-		</concat>
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js"/>
-		</java>
-		<java jar="${yuicompressor}" fork="true">
-			<arg line="${contents}/calendar.js -o ${contents}/calendar.js --type js --nomunge"/>
-		</java>
-		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/MyGoogleCal.kon"/>
-		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/widget.xml"/>
-		
-		<mkdir dir="${resources}"/>
-		<copy todir="${resources}">
-			<fileset dir="${js}/${long}/Resources"/>
-		 	<fileset dir="${res}" includes="images/theme/**,images/yahoo/**"/>
-		</copy>
-		
-		<delete>
-			<fileset dir="${dist}">
-				<include name="${projectname}_${short}_${version}.widget"/>
-				<include name="${projectname}_${short}_${version}.zip"/>
-			</fileset>
-		</delete>
-		<!--
-		<zip destfile="${dist}/${projectname}_${short}_${version}.widget">
-			<fileset dir="${tmp}/${long}/" includes="Contents.widget/**"/>
-		</zip>
-		-->
-		<exec os="Windows XP,Windows Vista,Windows 7" dir="." executable="${tools}/yahoo/Win_Converter.exe">
-		  <arg line="-flat '${dist}/${long}/${projectname}.widget' -o '${dist}/${projectname}_${short}_${version}.widget'"/>
-		</exec>
-		<exec os="Mac OS X" dir="." executable="${tools}/yahoo/Mac_Converter">
-		  <arg line="-flat '${dist}/${long}/${projectname}.widget' -o '${dist}/${projectname}_${short}_${version}.widget'"/>
-		</exec>
-		<zip destfile="${dist}/${projectname}_${short}_${version}.zip">
-			<fileset dir="${dist}" includes="${projectname}_${short}_${version}.widget"/>
-		</zip>
-	</target>
-	
-	<target name="deploy_yahoo" description="deploy for yahoo! widget" depends="package_yahoo">
-		<copy todir="${arcadia.yahoo_my_widgets}">
-			<fileset dir="${dist}" includes="*.widget"/>
-		</copy>
-	</target>
 	
 	<target name="unpacked_chrome" description="unpacked ext to desktop for Chrome">
 		<property name="long" value="chrome"/>
@@ -90,22 +18,22 @@
 		<mkdir dir="${contents}"/>
 		
 		<copy todir="${contents}">
-			<fileset dir="${js}/${long}"/>
-			<fileset file="${js}/bullseye/ext-core.js"/>
+			<fileset dir="${src}/${long}"/>
+			<fileset file="${src}/bullseye/ext-core.js"/>
 		</copy>
 		<concat destfile="${contents}/calendar.js">
-			<fileset file="${js}/bullseye/Blz.js"/>
-			<fileset file="${js}/bullseye/BlzAjax.js"/>
-			<fileset file="${js}/bullseye/BlzEvent.js"/>
-			<fileset file="${js}/bullseye/BlzXml.js"/>
-			<fileset file="${js}/bullseye/BlzVersion.js"/>
-			<fileset file="${js}/bullseye/BlzGData.js"/>
-			<fileset file="${js}/bullseye/BlzGDataDate.js"/>
-			<fileset file="${js}/bullseye/BlzGoogleCalendar.js"/>
-			<fileset file="${js}/bullseye/BlzCookie.js"/>
-			<fileset file="${js}/bullseye/BlzWidget.js"/>
-			<fileset file="${js}/bullseye/BlzWidgetBrowser.js"/>
-			<fileset file="${js}/common/MyGoogleCal.js"/>
+			<fileset file="${src}/bullseye/Blz.js"/>
+			<fileset file="${src}/bullseye/BlzAjax.js"/>
+			<fileset file="${src}/bullseye/BlzEvent.js"/>
+			<fileset file="${src}/bullseye/BlzXml.js"/>
+			<fileset file="${src}/bullseye/BlzVersion.js"/>
+			<fileset file="${src}/bullseye/BlzGData.js"/>
+			<fileset file="${src}/bullseye/BlzGDataDate.js"/>
+			<fileset file="${src}/bullseye/BlzGoogleCalendar.js"/>
+			<fileset file="${src}/bullseye/BlzCookie.js"/>
+			<fileset file="${src}/bullseye/BlzWidget.js"/>
+			<fileset file="${src}/bullseye/BlzWidgetBrowser.js"/>
+			<fileset file="${src}/common/MyGoogleCal.js"/>
 		</concat>
 		<replaceregexp match="@VERSION" replace="${version}" flags="g" byline="true" file="${contents}/manifest.json"/>
 		
@@ -119,7 +47,7 @@
 			<fileset dir="${res}/images" includes="theme/gcal/**"/>
 		</copy>
 		
-		<property name="desktop" value="C:/Users/makoto_kw/Desktop"/> 
+		<property name="desktop" value="${env.HOME}/Desktop"/> 
 		<copy todir="${desktop}/${projectname}.crx" overwrite="true">
 			<fileset dir="${contents}"/>
 		</copy>

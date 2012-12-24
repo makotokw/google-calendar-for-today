@@ -3,10 +3,9 @@ Today's Schedule in Google Calendar™
 
 Shows today's shedule in Google Calendar™.
 
-Copyright (c) 2009-2011, makoto_kw (http://www.makotokw.com)
+Copyright (c) 2009-2012, makoto_kw (http://www.makotokw.com)
 All rights reserved.
 
-Yahoo! Widget: http://widgets.yahoo.com/widgets/my-google-calendar
 Chrome Extension: https://chrome.google.com/extensions/detail/mkaaneppndljkmpgdcglnpfagfhjhipc
 Source: http://github.com/makotokw/google-calendar-for-today
 
@@ -15,6 +14,7 @@ Release Notes
 
 * Master
  - Chrome: Added notifaction window (window is closed after 15 seconds)
+ - YWE: Removed
 
 * v1.1.6 at 2011/03/17 (Chrome Extension)
  - Chrome: Changed title for Branding Guidelines: http://code.google.com/intl/ja/chrome/webstore/branding.html
