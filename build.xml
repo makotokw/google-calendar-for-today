@@ -1,5 +1,6 @@
 <?xml version="1.0" ?>
 <project default="unpacked_chrome">
+	<property environment="env" />
 	<property name="projectname" value="TodaysSchedule"/>
 	<loadfile property="version" srcfile="version.txt"/>
 	<property name="dist" value="dist"/>
@@ -19,7 +20,7 @@
 		
 		<copy todir="${contents}">
 			<fileset dir="${src}/${long}"/>
-			<fileset file="${src}/bullseye/ext-core.js"/>
+			<fileset file="${src}/bullseye/ext-core-debug.js"/>
 		</copy>
 		<concat destfile="${contents}/calendar.js">
 			<fileset file="${src}/bullseye/Blz.js"/>

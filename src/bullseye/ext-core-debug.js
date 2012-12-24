@@ -2836,7 +2836,7 @@ Ext.DomQuery = function(){
 	    
     // this eval is stop the compressor from
 	// renaming the variable to something shorter
-	eval("var batch = 30803;");    	
+	// eval("var batch = 30803;");    	
 
     function child(p, index){
         var i = 0,

@@ -1,17 +1,26 @@
 {
   "name": "__MSG_APP_TITLE__",
-  "version": "@VERSION",
   "description": "__MSG_APP_DESCRIPTION__",
+  "version": "@VERSION",
+  "manifest_version": 2,
   "default_locale": "en",
-  "icons": {
-      "128": "icon_128.png"
+  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "background": {
+    "page": "background.html"
   },
-  "background_page": "background.html",
   "options_page": "options.html",
   "browser_action": {
     "default_icon": "icon.png",
     "default_title": "__MSG_WINDOW_CAPTION__",
-    "popup": "popup.html"
+    "default_popup": "popup.html"
   },
-  "permissions": [ "tabs", "notifications", "http://*.google.com/", "https://*.google.com/"]
+  "permissions": [ 
+    "tabs",
+    "notifications",
+    "http://*.google.com/",
+    "https://*.google.com/"
+  ],
+  "icons": {
+      "128": "icon_128.png"
+  }
 }
