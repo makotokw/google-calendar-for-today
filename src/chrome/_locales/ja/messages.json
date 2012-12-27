@@ -2,7 +2,7 @@
 	"APP_TITLE": {"message":"Today's Schedule in Google Calendar™"},
 	"APP_DESCRIPTION": {"message":"Google Calendarにある今日の予定を表示します"},
 	"WINDOW_CAPTION": {"message":"Today's Schedule in Google Calendar"},
-	"GO_TO_CALENDAR": {"message":"クリックするとGoogle Calendarを開きます..."},
+	"GO_TO_CALENDAR": {"message":"クリックするとGoogle Calendarを開きます"},
 	"REFRESH_MENU": {"message":"画面の更新"},
 	"CREATE_ITEM_MENU": {"message":"新規アイテムの作成..."},
 	"CLOSE_MENU": {"message":"閉じる"},

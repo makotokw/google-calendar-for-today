@@ -20,6 +20,7 @@
 		
 		<copy todir="${contents}">
 			<fileset dir="${src}/${long}"/>
+			<fileset file="${src}/bullseye/ext-core.js"/>
 			<fileset file="${src}/bullseye/ext-core-debug.js"/>
 		</copy>
 		<concat destfile="${contents}/calendar.js">
@@ -41,11 +42,10 @@
 		<!-- copy icons -->
 		<mkdir dir="${resources}"/>
 		<copy todir="${resources}">
-		 	<fileset dir="${res}/images/chrome" includes="icon*"/>
+		 	<fileset dir="${res}/images/chrome" includes="icon*.png"/>
 		</copy>
 		<copy todir="${resources}/images">
-		 	<fileset dir="${res}/images/chrome" excludes="icon*"/>
-			<fileset dir="${res}/images" includes="theme/gcal/**"/>
+		 	<fileset dir="${res}/images/chrome" excludes="icon*.png"/>
 		</copy>
 		
 		<property name="desktop" value="${env.HOME}/Desktop"/> 

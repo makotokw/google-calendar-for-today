@@ -104,9 +104,12 @@ MyGoogleCal.Application = {
 			return;
 		}
 		for (var offset = 0; offset < 3; offset++) {
-			var events = [], start = (new Blz.GData.Date()).addDays(offset).resetHours(), cache = this.getAppointments(start);
+			var events = [],
+				start = (new Blz.GData.Date()).addDays(offset).resetHours(),
+				cache = this.getAppointments(start);
+
 			if (!cache) return;
-			for (calid in cache.items) {
+			for (var calid in cache.items) {
 				var cal = this.findCalendarById(calid);
 				if (cal && cal.selected) {
 					events = events.concat(cache.items[calid]);
@@ -117,30 +120,63 @@ MyGoogleCal.Application = {
 				var index = -1, now = new Date();
 				for (var i=0, len=events.length; i<len; i++) {
 					var event = events[i];
-					if (event.allDay) continue; // ignore all day event
-					if (now > event.end) continue; // finished event
-					if (now >= event.start && now <= event.end) { // current event
-						//index = i;
-					} else {
-						if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start 
-							index = i; // prefer just before
-						}
-						if (-1 == index) { // check Just Before Event?
-							index = i;
-						}
+					// if (event.allDay) continue; // skip all day event
+					if (now > event.end) continue; // skip finished event
+					if (now >= event.start && now <= event.end) continue; // skip current event
+					if (event.start - now < 30 * 60 * 1000) { // before 30 minutes to event.start
+						index = i; // prefer just before
+						break;
+					}
+					if (-1 == index) { // check Just Before Event?
+						index = i;
 						break;
 					}
 				}
-				if (index != -1) return events[index];
+				if (index != -1) {
+					return events[index];
+				}
 			}
 		}
 		return;
 	},
+
+	findAllDayEvents: function(date) {
+		var allDayEvents = [];
+		if (!this.isLogin()||this.isCalendarListRequesting()) {
+			return allDayEvents;
+		}
+		var events = [],
+			start = (new Blz.GData.Date(date)).resetHours(),
+			cache = this.getAppointments(start);
+
+		if (!cache) return allDayEvents;
+		for (var calid in cache.items) {
+			var cal = this.findCalendarById(calid);
+			if (cal && cal.selected) {
+				events = events.concat(cache.items[calid]);
+			}
+		}
+		if (events.length > 0) {
+			events.sort(this.appointmentCompare);
+			var index = -1,
+					now = new Date();
+			for (var i=0, len=events.length; i<len; i++) {
+				var event = events[i];
+				if (event.allDay) {
+					if (start.date.getTime() >= event.end.getTime()) continue;
+					allDayEvents.push(event);
+				}
+			}
+		}
+		return allDayEvents;
+	},
+
 	getAppointments: function(dt) {
-		var w = Blz.Widget;
+		var w = Blz.Widget,
+				cache;
 		try {
 			var key = dt.toKeyString();
-			var cache = this.cacheAppts[key] || {loaded:false,loading:false};
+			cache = this.cacheAppts[key] || {loaded:false,loading:false};
 			if (!cache.loaded) {
 				if (!cache.loading) {
 					cache.items = {};

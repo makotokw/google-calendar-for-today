@@ -2,7 +2,7 @@
 	"APP_TITLE": {"message":"Today's Schedule in Google Calendar™"},
 	"APP_DESCRIPTION": {"message":"Shows today's shedule in Google Calendar™"},
 	"WINDOW_CAPTION": {"message":"Today's Schedule in Google Calendar"},
-	"GO_TO_CALENDAR": {"message":"Click to go to Google Calendar..."},
+	"GO_TO_CALENDAR": {"message":"Click to go to Google Calendar"},
 	"REFRESH_MENU": {"message":"Refresh"},
 	"CREATE_ITEM_MENU": {"message":"Create New Item..."},
 	"CLOSE_MENU": {"message":"Close"},

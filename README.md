@@ -14,6 +14,10 @@ Release Notes
 
 * Master
  - Chrome: Added notifaction window (window is closed after 15 seconds)
+
+* v1.2.0.5 at 2012/12/27 (Chrome Extension)
+ - Chrome: Updated to manifest version 2
+ - Chrome: Changed design by using Twitter-bootstrap
  - YWE: Removed
 
 * v1.1.6 at 2011/03/17 (Chrome Extension)

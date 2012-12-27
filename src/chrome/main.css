@@ -9,6 +9,16 @@ body {
     overflow-x: hidden;
 }
 
+.cal_toolbar {
+    padding: 4px 4px 4px 8px;
+    background: #eee;
+    border-bottom: 1px solid #ddd;
+}
+
+.cal_content {
+    padding: 4px;
+}
+
 .options {
     padding-top: 60px;
     padding-bottom: 40px;
@@ -20,109 +30,121 @@ body {
 
 .indicator {
     margin: 0 auto;
+    background: url("./images/icon_loading.gif") top left no-repeat;
+    padding-left: 20px;
 }
 
-#cal {
-    position: relative;
-    padding: 10px;
+.logo {
+    font-family: "Segoe UI", Verdana, Geneva, Arial, Helvetica, sans-serif;
+    color: #333;
+    font-size: 1.3em;
+    line-height: 1.8em;
+    font-weight: bold;
+    margin-right: .5em;
 }
-
-#cal_close {
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-
-.header_r3 a {
-    text-decoration: none;
+.logo:focus {
+    outline: none;
 }
 
 .day_header {
     color: #000;
+    font-weight: bold;
+}
+
+.date_header:first-child,
+.date_header:nth-child(2) {
+    margin: 0;
 }
 
 .event_list {
-    padding: 0 6px 0 2px;
+    margin: 0;
+    padding: 0 4px 8px 2px;
 }
 
-.event_list li {
-    margin: 1px 4px 1px 4px;
-    -webkit-border-radius: 3px;
-    padding: 4px;
-    color: #fff;
+.event {
+    margin: 0 4px 0 4px;
     line-height: 1.4em;
+    border-bottom: 1px solid #ccc;
+    position: relative;
+    color: #333;
 }
 
+.event .feed_color {
+  width: 16px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: 0 12px 0 0;
+  text-align: center;
+  padding: 5px 0 0 0;
+  color: #fff;
+  font-weight: bold;
+}
+
+.event .event_details {
+  margin-left: 20px;
+  padding: 4px;
+}
+
+.event_list .just_before,
 .event_list .current {
-    border-left: red 3px solid;
+    border-bottom: red 2px solid;
 }
 
 .event_list .before {
-    border-left: yellow 3px solid;
+    border-bottom: yellow 1px solid;
 }
 
-.event_list .just_before {
-    border-left: red 3px solid;
+.event_title {
+    font-weight: bold;
 }
 
-.event_list li a {
+.event a {
     text-decoration: none;
 }
 
-.event_list li a:hover {
+.event a:hover {
     text-decoration: underline;
 }
 
-.event_list li a.event_title {
-    color: #fff;
+.event a.event_title {
+    color: #333;
 }
 
-.event_list li .event_location {
+.event_location {
     margin-left: .5em;
 }
 
-.event_list li .event_timer {
+.event_date {
+    display: block;
+}
+
+.event_timer {
     display: block;
     text-align: right;
 }
 
 .event_list .past {
     opacity: 0.8;
-    font-size: 90%;
-    color: #ddd;
 }
 
-ul.event_list .past span {
-    color: #ddd;
+.event_list .past,
+.event_list .past span,
+.event_list .past .event_title {
+    color: #666;
 }
 
-ul.event_list .past .event_title {
-    color: #ddd;
-}
-
-.event_list .nowmarker {
-    -webkit-border-radius: 0;
-    background-color: #ff0000;
+.now_marker {
+    background-color: #E16F5B;
     text-align: center;
-    border-top: 2px solid #ff0000;
+    border-top: 2px solid #E16F5B;
     height: 0;
     margin: 2px 0 2px 0;
     padding: 0;
     overflow: hidden;
     opacity: 1;
 }
-
-/*#mail_label,
-#password_label { 
-  display:inline-block; width:100px; padding-right:.5em; text-align:right;
-  }*/
-/*#mail, 
-#password { 
-  width:300px;
-  }*/
-/*fieldset p { 
-  padding:2px; margin:0;
-  }*/
 
 .copyright {
     text-align: center;

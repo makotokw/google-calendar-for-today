@@ -1,45 +1,32 @@
 <!doctype html>
 <head>
 <meta charset="utf-8"/>
-<link type="text/css" rel="stylesheet" href="main.css"/>
-<link type="text/css" rel="stylesheet" href="images/theme/gcal/theme.css"/>
-</head>
-<body class="popup">
-<div id="cal">
-<!--<img id="cal_close" src="images/close.png"/>-->
-<div class="header">
-	<div class="header_r1">
-		<div class="header_r2">
-			<div class="header_r3"><a id="header_title" href="https://www.google.com/calendar" target="_blank">Google Calendar for Today</a></div>
-		</div>
-	</div>
-</div>
-<div class="content">
-	<div class="content_r1">
-		<div class="content_r2">
-			<div id="content" class="content_r3">
-				<div id="events"></div>
-				<div class="fixed"></div>
-			</div>
-		</div>
-	</div>
-</div>
-<div class="footer">
-	<div class="footer_r1">
-		<div class="footer_r2">
-			<div class="footer_r3">
-				<a href="#" id="prev"></a>
-				<a href="#" id="home"></a>
-				<a href="#" id="next"></a>
-				<!--<a href="#" id="calendar_list"></a>-->
-				<a href="#" id="refresh"></a>
-			</div>
-		</div>
-	</div>
-</div>
-</div>
+<link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="main.css"/>
 <script src="jquery.min.js"></script>
 <script src="jquery-ui.min.js"></script>
 <script src="popup.js"></script>
+</head>
+<body class="popup">
+<a href="#"></a>
+<div id="cal">
+	<div class="cal_toolbar">
+		<a href="#" id="logo" class="logo">Today's Schedule</a>
+		<div class="pull-right">
+			<div class="btn-group">
+				<a class="btn" href="#" id="prev"><i class="icon-chevron-left"></i></a>
+				<a class="btn" href="#" id="home"><i class="icon-home"></i></a>
+				<a class="btn" href="#" id="next"><i class="icon-chevron-right"></i></a>
+			</div>
+			<a class="btn" href="#" id="refresh"><i class="icon-repeat"></i></a>
+		</div>
+		<!-- <a class="btn pull-right" href="#" id="calendar"><i class="icon-calendar"></i></a> -->
+		<div class="clearfix"></div>
+	</div>
+	<div class="cal_content">
+		<div id="events"></div>
+		<div class="clearfix"></div>
+	</div>
+</div>
 </body>
 </html>

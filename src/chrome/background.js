@@ -5,8 +5,10 @@
       app = MyGoogleCal.Application;
       
     var defaultTitle = w.getResourceString('WINDOW_CAPTION');
-    var canvas = document.getElementById('canvas'), canvasContext = canvas.getContext('2d'), icon = document.getElementById('icon');
-    
+    var canvas = document.getElementById('canvas'),
+        canvasContext = canvas.getContext('2d'),
+        icon = document.getElementById('icon');
+
     w.initialize();
     gcal.source = 'makoto_kw-MyGoogleCal-1';
     gcal.useGoogleLogin = (w.getPref('useGoogleApps')!='1') ? false : true;
@@ -40,20 +42,40 @@
     var badgeText = '';
     function updateBadge() {
       var ba = chrome.browserAction;
+      drawIconAtRotation(0);
       if (app.isLogin()) {
         var event = app.findFocusEvent();
-        ba.setIcon({path:'icon.png'});
         if (!event) {
           badgeText = '';
           ba.setBadgeText({text:badgeText});
           ba.setTitle({'title':defaultTitle});
         } else {
           var now = new Date();
-          var location = (event.location && event.location.length > 0) ? '( ' + event.location + ' )' : '';
-          var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT') : w.getResourceString('TIME_FROM_TO',[app.getTimeString(event.start),app.getTimeString(event.end)]);
-          var remain = (now < event.start) ? app.getRemainTimeString(event.start) : '';
+          var tooltip = '';
+          if (event.allDay) {
+            var events = app.findAllDayEvents(event.start);
+            var eventTitles = [];
+            for (var ei=0; ei<events.length; ei++) {
+              var ev = events[ei];
+              var eventTitle = ' • ' + ev.title;
+              if (ev.location && ev.location.length > 0) {
+                  eventTitle += ' ( ' + event.location + ' )';
+              }
+              eventTitles.push(eventTitle);
+            }
+            tooltip = [
+              app.getHeaderDateString(event.start) + ' ' + w.getResourceString('ALL_DAY_EVENT'),
+              app.getRemainTimeString(event.start),
+              eventTitles.join('\n')
+            ].join('\n');
+          } else {
+            var location = (event.location && event.location.length > 0) ? '( ' + event.location + ' )' : '';
+            var time = (event.allDay) ? w.getResourceString('ALL_DAY_EVENT')
+                : w.getResourceString('TIME_FROM_TO',[app.getTimeString(event.start),app.getTimeString(event.end)]);
+            var remain = (now < event.start) ? app.getRemainTimeString(event.start) : '';
+            tooltip = [event.title,time,remain,location].join('\n');
+          }
           var shortRemain = (now < event.start) ? app.getRemainTimeShortString(event.start) : '';
-          var tooltip = [event.title,time,remain,location].join(' ');
           if (badgeText != shortRemain) {
             badgeText = shortRemain;
             ba.setBadgeText({text:badgeText});
@@ -67,9 +89,8 @@
         } else {
           ba.setBadgeBackgroundColor({color:[0, 24, 208, 255]});
         }
-        
+
       } else {
-        ba.setIcon({path:'icon_glay.png'});
         ba.setBadgeBackgroundColor({color:[190, 190, 190, 230]});
         badgeText = '?';
         ba.setBadgeText({text:badgeText});
@@ -101,27 +122,32 @@
       var rotation = 0;
       speed = speed || 10,
       frames = frames || 36;
-      var timerId = setInterval(function(){animateFlip();},speed);
-      function animateFlip() {
-        rotation += 1/frames;
-        if (rotation <= 1) {
-          drawIconAtRotation(rotation);
-        } else {
-          drawIconAtRotation(0);
-          clearTimeout(timerId);
-        }
-      }
+      var timerId = setInterval(function(){
+          rotation += 1/frames;
+          if (rotation <= 1) {
+            drawIconAtRotation(rotation);
+          } else {
+            drawIconAtRotation(0);
+            clearTimeout(timerId);
+          }
+        },speed);
     }
     
     function ease(x) {
       return (1-Math.sin(Math.PI/2+x*Math.PI))/2;
     }
     function drawIconAtRotation(rotation) {
+      var baseX = Math.ceil(canvas.width/2),
+        baseY = Math.ceil(canvas.height/2);
       canvasContext.save();
       canvasContext.clearRect(0, 0, canvas.width, canvas.height);
-      canvasContext.translate(Math.ceil(canvas.width/2), Math.ceil(canvas.height/2));
+      canvasContext.translate(baseX, baseY);
       canvasContext.rotate(2*Math.PI*ease(rotation));
-      canvasContext.drawImage(icon,-Math.ceil(canvas.width/2),-Math.ceil(canvas.height/2));
+      canvasContext.drawImage(icon,-baseX,-baseY);
+      canvasContext.font = "bold 8pt Arial";
+      canvasContext.textBaseline = "middle";
+      canvasContext.textAlign = "center";
+      canvasContext.fillText((new Date()).getDate(), -1,0);
       canvasContext.restore();
       chrome.browserAction.setIcon({imageData:canvasContext.getImageData(0, 0,canvas.width,canvas.height)});
     }
@@ -148,7 +174,7 @@
       if (date) {
         var use24 = w.getPref('use24HourTime');
         var partOne = date.getHours(), partTwo = date.getMinutes(), amPM = '';
-        if (!use24) {
+        if (use24 != 1) {
           if (partOne > 12) {
             partOne = partOne - 12;
             amPM = ' PM';
