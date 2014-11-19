@@ -28,6 +28,14 @@ body {
     margin: 0 auto;
 }
 
+.danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border: 1px solid #ebccd1;
+    border-radius: 4px;
+    padding: 8px;
+}
+
 .indicator {
     margin: 0 auto;
     background: url("./images/icon_loading.gif") top left no-repeat;

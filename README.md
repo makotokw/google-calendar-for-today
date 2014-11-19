@@ -3,7 +3,7 @@ Today's Schedule in Google Calendar™
 
 Shows today's shedule in Google Calendar™.
 
-Copyright (c) 2009-2012, makoto_kw (http://www.makotokw.com)
+Copyright (c) 2009-2014, makoto_kw (http://www.makotokw.com)
 All rights reserved.
 
 Chrome Extension: https://chrome.google.com/extensions/detail/mkaaneppndljkmpgdcglnpfagfhjhipc
@@ -14,6 +14,9 @@ Release Notes
 
 * Master
  - Chrome: Added notifaction window (window is closed after 15 seconds)
+
+* v1.2.0.6 at 2014/11/19 (Chrome Extension)
+ - No loger support With Google Calendar API v2
 
 * v1.2.0.5 at 2012/12/27 (Chrome Extension)
  - Chrome: Updated to manifest version 2

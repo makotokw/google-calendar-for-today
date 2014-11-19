@@ -1,5 +1,5 @@
 {
-	"APP_TITLE": {"message":"Today's Schedule in Google Calendar™"},
+	"APP_TITLE": {"message":"今日の予定 in Google Calendar™"},
 	"APP_DESCRIPTION": {"message":"Google Calendarにある今日の予定を表示します"},
 	"WINDOW_CAPTION": {"message":"Today's Schedule in Google Calendar"},
 	"GO_TO_CALENDAR": {"message":"クリックするとGoogle Calendarを開きます"},
